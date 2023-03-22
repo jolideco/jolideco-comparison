@@ -3,8 +3,6 @@ rule init_config:
         "config/template.yaml"
     output:
         "config/{name}/{bkg_level}/{prefix}.yaml"
-    log:
-        "logs/init-config.log"
     run:
         import logging
         from pathlib import Path

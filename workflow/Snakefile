@@ -3,6 +3,9 @@
 # https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html,
 # in particular regarding the standardized folder structure mentioned there. 
 
+import yaml
+from pathlib import Path
+
 BKG_LEVELS = {
     "bg1": 0.01,
     "bg2": 0.1,
@@ -40,10 +43,14 @@ PREFIXES = {
     "joint": "chandra_gauss_fwhm4710_128x128,xmm_gauss_fwhm14130_128x128",
 }
 
+with Path("config/template.yaml").open("r") as f:
+    config_template = yaml.safe_load(f)
+
+METHODS = [_["name"].lower().replace(" ", "-") for _ in config_template["runs"]]
 
 include: "rules/init-config.smk"
 
 # all rule 
 rule all:
     input:
-        expand("config/{name}/{bkg_level}/{prefix}.yaml", name=NAMES, bkg_level=BKG_LEVELS, prefix=PREFIXES),
+        expand("results/{name}/{bkg_level}/{method}", name=NAMES, bkg_level=BKG_LEVELS, prefix=PREFIXES, method=METHODS),

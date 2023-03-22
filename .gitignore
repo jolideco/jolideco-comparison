@@ -9,3 +9,4 @@ __pycache__
 report.html
 .ipynb_checkpoints
 .DS_Store
+config/

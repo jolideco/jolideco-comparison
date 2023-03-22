@@ -1,0 +1,53 @@
+title: {title}
+prefix: {prefix}
+bkg_level: {bkg_level}
+name: {name}
+plot:
+    asinh_a: 0.01
+    max_cut: {max_value}
+runs:
+  - name: Pylira
+    method: lira
+    deconvolver:
+      n_burn_in: 500
+      n_iter_max: 2000
+      alpha_init: [1, 1, 1, 1, 1, 1, 1]
+  - name: Jolideco Uniform Prior N=10
+    method: jolideco
+    deconvolver:
+      n_epochs: 10
+    components:
+      flux:
+        prior:
+          type: uniform
+  - name: Jolideco Uniform Prior N=1000
+    method: jolideco
+    deconvolver:
+      n_epochs: 1000
+    components:
+      flux:
+        prior:
+          type: uniform
+  - name: Jolideco Patch Prior
+    method: jolideco
+    deconvolver:
+      n_epochs: 1000
+      beta: 1.0
+      device: cuda:0
+    components:
+      flux:
+        upsampling_factor: 2
+        use_log_flux: true
+        prior:
+          type: gmm-patches
+          stride: 4
+          jitter: true
+          cycle_spin: True
+          cycle_spin_subpix: true
+          device: cuda:0
+          gmm:
+            type: gleam-v0.2
+            stride: 4
+          norm:
+            type: fixed-max
+            max_value: {max_value}

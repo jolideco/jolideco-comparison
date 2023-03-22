@@ -8,3 +8,4 @@ __pycache__
 *.par
 report.html
 .ipynb_checkpoints
+.DS_Store

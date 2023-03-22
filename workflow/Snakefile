@@ -2,3 +2,48 @@
 # Please follow the best practices: 
 # https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html,
 # in particular regarding the standardized folder structure mentioned there. 
+
+BKG_LEVELS = {
+    "bg1": 0.01,
+    "bg2": 0.1,
+    "bg3": 1,
+}
+
+NAMES = [
+    "point-sources",
+    "disk1",
+    "disk2",
+    "disk3",
+    "spiral1",
+    "spiral2",
+    "spiral3",
+    "spiral4",
+    "spiral5"
+]
+
+MAX_VALUES = {
+    "point-sources": 340.0,
+    "disk1": 500,
+    "disk2": 500,
+    "disk3": 500,
+    "spiral1": 200,
+    "spiral2": 200,
+    "spiral3": 200,
+    "spiral4": 200,
+    "spiral5": 1000,
+}
+
+
+PREFIXES = {
+    "chandra": "chandra_gauss_fwhm4710_128x128",
+    "xmm": "xmm_gauss_fwhm14130_128x128",
+    "joint": "chandra_gauss_fwhm4710_128x128,xmm_gauss_fwhm14130_128x128",
+}
+
+
+include: "rules/init-config.smk"
+
+# all rule 
+rule all:
+    input:
+        expand("config/{name}/{bkg_level}/{prefix}.yaml", name=NAMES, bkg_level=BKG_LEVELS, prefix=PREFIXES),

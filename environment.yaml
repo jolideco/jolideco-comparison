@@ -1,13 +1,13 @@
 # Conda environment for reducing fermi data
-name: snakemake-workflow-template
+name: jolideco-comparison
 
 channels:
   - conda-forge
+  - bioconda
 
 variables:
   PYTHONNOUSERSITE: "1"
 
 dependencies:
-  - python=3.10
+  - python=3.9
   - snakemake>=6.4.1
-  - pydantic>=1.9.0

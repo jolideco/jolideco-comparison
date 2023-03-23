@@ -3,8 +3,9 @@ import logging
 import numpy as np
 import yaml
 from astropy.io import fits
-from jolideco.core import MAPDeconvolver
-from jolideco.models import FluxComponents
+
+# from jolideco.core import MAPDeconvolver
+# from jolideco.models import FluxComponents
 
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -59,9 +60,14 @@ def run_pylira():
 
 
 def run_comparison(config):
-    print(config)
+    datasets = read_datasets(config)
+    run_jolideco(datasets)
+    run_pylira(datasets)
 
 
 if __name__ == "__main__":
-    config = read_config()
-    run_comparison(config)
+    print("Hello")
+    config = read_config(snakemake.input[0])
+    print(config)
+
+    # run_comparison(config)

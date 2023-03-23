@@ -4,6 +4,6 @@ rule run_comparison:
     output:
         "results/{name}/{bkg_level}/{method}/{name}-{bkg_level}-{method}-{prefix}-result.fits.gz"
     log:
-        "logs/run-comparion/{name}-{bkg_level}-{method}-{prefix}.log"
+        "logs/run-comparison/{name}-{bkg_level}-{method}-{prefix}.log"
     script:
         "scripts/run-comparison.py"

@@ -11,3 +11,4 @@ variables:
 dependencies:
   - python=3.9
   - snakemake>=6.4.1
+  - astropy>5.2

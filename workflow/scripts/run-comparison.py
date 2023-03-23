@@ -1,8 +1,10 @@
 import logging
+from pathlib import Path
 
 import numpy as np
 import yaml
-from astropy.io import fits
+
+# from astropy.io import fits
 
 # from jolideco.core import MAPDeconvolver
 # from jolideco.models import FluxComponents
@@ -66,8 +68,7 @@ def run_comparison(config):
 
 
 if __name__ == "__main__":
-    print("Hello")
-    config = read_config(snakemake.input[0])
-    print(config)
-
+    for _ in snakemake.output:
+        path = Path(_)
+        path.touch()
     # run_comparison(config)

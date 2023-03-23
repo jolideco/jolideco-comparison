@@ -3,6 +3,8 @@ rule init_config:
         "config/template.yaml"
     output:
         "config/{name}/{bkg_level}/{prefix}.yaml"
+    log:
+        "logs/init-config/{name}-{bkg_level}-{prefix}.log"
     run:
         import logging
         from pathlib import Path
@@ -26,6 +28,7 @@ rule init_config:
                     )
 
         path = Path(output[0])
+       
         with path.open("w") as f:
             log.info(f"writing {path}")
             f.write(template_filled)

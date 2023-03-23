@@ -51,7 +51,8 @@ METHODS = [_["name"].lower().replace(" ", "-") for _ in config_template["runs"]]
 include: "rules/init-config.smk"
 include: "rules/run-comparison.smk"
 
+
 # all rule 
 rule all:
     input:
-        expand("results/{name}/{bkg_level}/{method}/{name}-{bkg_level}-{method}-{prefix}-result.fits.gz", name=NAMES, bkg_level=BKG_LEVELS, prefix=PREFIXES, method=METHODS),
+        expand("results/{name}/{bkg_level}/{prefix}/{method}/{name}-{bkg_level}-{method}-{prefix}-result.fits.gz", name=NAMES, bkg_level=BKG_LEVELS, prefix=PREFIXES, method=METHODS)

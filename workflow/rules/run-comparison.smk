@@ -2,8 +2,8 @@ rule run_comparison:
     input:
         "config/{name}/{bkg_level}/{prefix}.yaml"
     output:
-        directory("results/{name}/{bkg_level}/{method}")
+        "results/{name}/{bkg_level}/{method}/{name}-{bkg_level}-{method}-{prefix}-result.fits.gz"
     log:
-        "logs/{name}/{bkg_level}/{method}.log"
+        "logs/run-comparion/{name}-{bkg_level}-{method}-{prefix}.log"
     script:
         "scripts/run-comparison.py"

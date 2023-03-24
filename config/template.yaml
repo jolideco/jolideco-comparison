@@ -46,7 +46,7 @@ runs:
           cycle_spin_subpix: true
           device: cuda:0
           gmm:
-            type: gleam-v0.2
+            type: gleam-v0.1
             stride: 4
           norm:
             type: fixed-max

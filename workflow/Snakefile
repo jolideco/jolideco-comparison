@@ -37,11 +37,7 @@ MAX_VALUES = {
 }
 
 
-PREFIXES = {
-    "chandra": "chandra_gauss_fwhm4710_128x128",
-    "xmm": "xmm_gauss_fwhm14130_128x128",
-    "joint": "chandra_gauss_fwhm4710_128x128,xmm_gauss_fwhm14130_128x128",
-}
+PREFIXES = ["chandra", "xmm", "joint"]
 
 with Path("config/template.yaml").open("r") as f:
     config_template = yaml.safe_load(f)

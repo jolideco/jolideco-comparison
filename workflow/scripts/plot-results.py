@@ -32,7 +32,9 @@ def plot_flux(flux, flux_ref, filename, config):
         gridspec_kw={"left": 0.04, "right": 0.97, "bottom": 0.05, "top": 0.98},
     )
 
-    norm = simple_norm(flux_ref, **config["plot"]["flux"]["norm"])
+    kwargs = config["plot"]["flux"]["norm"]
+    kwargs["max_cut"] = 5 * kwargs["max_cut"]
+    norm = simple_norm(flux_ref, **kwargs)
 
     im = axes[0].imshow(flux, norm=norm, origin="lower")
 
@@ -62,7 +64,7 @@ def plot_flux(flux, flux_ref, filename, config):
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_npred(npred, npred_ref, filename):
+def plot_npred(npred, npred_ref, filename, config):
     """Plot npred and residuals"""
     fig, axes = plt.subplots(
         nrows=1,
@@ -71,12 +73,7 @@ def plot_npred(npred, npred_ref, filename):
         gridspec_kw={"left": 0.04, "right": 0.97, "bottom": 0.05, "top": 0.98},
     )
 
-    norm = simple_norm(
-        npred_ref,
-        min_cut=0,
-        stretch="asinh",
-        asinh_a=0.1,
-    )
+    norm = simple_norm(flux_ref, **config["plot"]["npred"]["norm"])
 
     im = axes[0].imshow(npred, norm=norm, origin="lower")
 
@@ -281,39 +278,49 @@ def plot_dataset(comparison_config):
     plot_background(comparison_config=comparison_config)
 
 
+def npred_pylira(flux, dataset):
+    """Npred for Pylira"""
+    npred = convolve_fft(
+        flux + (dataset["background"] * dataset["exposure"]), dataset["psf"]
+    )
+    return npred
+
+
+def npred_jolideco(flux, dataset):
+    """Npred for Jolideco"""
+    npred = (
+        convolve_fft(flux + dataset["background"], dataset["psf"]) * dataset["exposure"]
+    )
+    return npred
+
+
 if __name__ == "__main__":
     kwargs = {
         "name": snakemake.wildcards.name,
         "bkg_level": snakemake.wildcards.bkg_level,
         "prefix": snakemake.wildcards.prefix,
-        "method": snakemake.wildcards.method,
     }
 
-    result = read_deconvolution_result(**kwargs)
+    result = read_deconvolution_result(snakemake.input[0])
     datasets = read_datasets_all(**kwargs)
     dataset = stack_datasets(datasets=datasets)
 
-    if "pylira" in kwargs["method"]:
+    flux_ref = read_flux_ref(name=kwargs["name"])
+
+    if "pylira" in snakemake.wildcards.method:
         plot_trace_lira(result=result, filename=snakemake.output[2])
-        flux = result.flux
+        flux = result.posterior_mean_from_trace
+        npred = npred_pylira(flux=flux, dataset=dataset)
+        npred_ref = npred_pylira(flux=flux_ref, dataset=dataset)
 
-        npred = convolve_fft(
-            flux + (dataset["background"] * dataset["exposure"]), dataset["psf"]
-        )
-
-    if "jolideco" in kwargs["method"]:
+    if "jolideco" in snakemake.wildcards.method:
         plot_traces_jolideco(result=result, filename=snakemake.output[2])
-        flux = result.flux_numpy
-        npred = (
-            convolve_fft(flux + dataset["background"], dataset["psf"])
-            * dataset["exposure"]
-        )
+        flux = result.flux_total
+        npred = npred_jolideco(flux=flux, dataset=dataset)
+        npred_ref = npred_jolideco(flux=flux_ref, dataset=dataset)
 
     path = "config/{name}/{bkg_level}/{prefix}.yaml".format(**kwargs)
     config = read_config(path)
-
-    flux_ref = read_flux_ref(**kwargs)
-    npred_ref = read_npred_ref(**kwargs)
 
     plot_flux(
         flux=flux,

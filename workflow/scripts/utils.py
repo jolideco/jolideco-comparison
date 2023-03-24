@@ -24,14 +24,14 @@ FILE_PATTERN_CHANDRA = {
     "counts": "chandra_*_sim*_{bkg_level}_{name}*iter*.fits",
     "psf": "chandra_gauss_fwhm4710_128x128_psf_33x33.fits",
     "flux": "chandra_gauss_fwhm4710_128x128_mod*{name}.fits",
-    "npred": "chandra_gauss_fwhm4710_128x128_npred_33x33.fits",
+    "npred": "chandra_gauss_fwhm4710_128x128_img*{name}.fits",
 }
 
 FILE_PATTERN_XMM = {
     "counts": "xmm_*_sim*_{bkg_level}_{name}*iter*.fits",
     "psf": "xmm_gauss_fwhm14130_128x128_psf_63x63.fits",
     "flux": "xmm_gauss_fwhm14130_128x128_mod*{name}.fits",
-    "npred": "chandra_gauss_fwhm4710_128x128_npred_33x33.fits",
+    "npred": "xmm_gauss_fwhm14130_128x128_img*{name}.fits",
 }
 
 FILE_PATTERN = {
@@ -80,9 +80,20 @@ def get_instrument_and_idx(filename):
     return instrument, idx
 
 
-def read_flux_ref(instrument, bkg_level, name):
+def read_flux_ref(name):
     """Read reference flux"""
-    filename = get_filenames(instrument, bkg_level, name, quantity="flux")[0]
+    filename = get_filenames("chandra", bkg_level="", name=name, quantity="flux")[0]
+
+    flux_ref = fits.getdata(filename).astype(np.float32)
+
+    return flux_ref
+
+
+def read_npred_ref(instrument, name):
+    """Read reference npred"""
+    filename = get_filenames(
+        instrument=instrument, bkg_level="", name=name, quantity="npred"
+    )[0]
 
     flux_ref = fits.getdata(filename).astype(np.float32)
 
@@ -97,7 +108,6 @@ def get_filenames(instrument, bkg_level, name, quantity="counts"):
         name = ""
 
     pattern = FILE_PATTERN[instrument][quantity].format(bkg_level=bkg_level, name=name)
-
     return list(path.glob(pattern))
 
 

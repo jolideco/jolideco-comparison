@@ -9,6 +9,12 @@ plot:
       max_cut: {max_value}
       min_cut: 0
       stretch: "asinh"
+  npred:
+    norm:
+      asinh_a: 0.1
+      max_cut: {max_value}
+      min_cut: 0
+      stretch: "asinh"
 runs:
   - name: pylira
     method: lira

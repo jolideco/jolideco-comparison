@@ -43,25 +43,37 @@ def run_jolideco(datasets, config):
     from jolideco.core import MAPDeconvolver
     from jolideco.models import FluxComponents
 
-    datasets = prepare_datasets_jolideco(datasets=datasets)
+    flux_init = get_flux_init(datasets=datasets)
 
-    config["components"]["flux"]["flux_init"] = get_flux_init(datasets=datasets)
+    if config["components"]["flux"].get("upsampling_factor", 1) > 1:
+        flux_init = flux_init.repeat(2, axis=0).repeat(2, axis=1)
+
+    config["components"]["flux"]["flux_upsampled"] = flux_init
     components = FluxComponents.from_dict(config["components"])
 
     deconvolver = MAPDeconvolver(**config["deconvolver"])
+
+    if DEBUG:
+        deconvolver.n_epochs = 1
+
+    datasets = prepare_datasets_jolideco(datasets=datasets)
     result = deconvolver.run(datasets=datasets, components=components)
     return result
 
 
 def run_pylira(datasets, config):
     """Run LIRA"""
-    from pylira import Deconvolver
+    from pylira import LIRADeconvolver
 
     dataset = prepare_datasets_lira(datasets=datasets)
 
     dataset["flux_init"] = get_flux_init(datasets=datasets)
 
-    deconvolver = Deconvolver(**config["deconvolver"])
+    deconvolver = LIRADeconvolver(**config["deconvolver"])
+
+    if DEBUG:
+        deconvolver.n_iter_max = 1
+
     result = deconvolver.run(data=dataset)
     return result
 

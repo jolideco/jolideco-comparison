@@ -6,6 +6,8 @@
 import yaml
 from pathlib import Path
 
+report: "report/workflow.rst"
+
 BKG_LEVELS = {
     "bg1": 0.01,
     "bg2": 0.1,

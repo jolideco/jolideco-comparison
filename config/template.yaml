@@ -6,13 +6,13 @@ plot:
     asinh_a: 0.01
     max_cut: {max_value}
 runs:
-  - name: Pylira
+  - name: pylira
     method: lira
     deconvolver:
       n_burn_in: 500
       n_iter_max: 2000
       alpha_init: [1, 1, 1, 1, 1, 1, 1]
-  - name: Jolideco Uniform Prior N=10
+  - name: jolideco-uniform-prior=n=10
     method: jolideco
     deconvolver:
       n_epochs: 10
@@ -20,7 +20,7 @@ runs:
       flux:
         prior:
           type: uniform
-  - name: Jolideco Uniform Prior N=1000
+  - name: jolideco-uniform-prior=n=1000
     method: jolideco
     deconvolver:
       n_epochs: 1000
@@ -28,7 +28,7 @@ runs:
       flux:
         prior:
           type: uniform
-  - name: Jolideco Patch Prior
+  - name: jolideco-patch-prior
     method: jolideco
     deconvolver:
       n_epochs: 1000

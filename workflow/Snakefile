@@ -48,9 +48,10 @@ METHODS = [_["name"] for _ in config_template["runs"]]
 
 include: "rules/init-config.smk"
 include: "rules/run-comparison.smk"
+include: "rules/plot-results.smk"
 
 
 # all rule 
 rule all:
     input:
-        expand("results/{name}/{bkg_level}/{prefix}/{method}/{name}-{bkg_level}-{method}-{prefix}-result.fits.gz", name=NAMES, bkg_level=BKG_LEVELS, prefix=PREFIXES, method=METHODS)
+        expand("results/{name}/{bkg_level}/{prefix}/{method}/images/flux.png", name=NAMES, bkg_level=BKG_LEVELS, prefix=PREFIXES, method=METHODS)

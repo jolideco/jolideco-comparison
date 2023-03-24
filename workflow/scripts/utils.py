@@ -23,14 +23,14 @@ DATA_PATH = {
 FILE_PATTERN_CHANDRA = {
     "counts": "chandra_*_sim*_{bkg_level}_{name}*iter*.fits",
     "psf": "chandra_gauss_fwhm4710_128x128_psf_33x33.fits",
-    "flux": "chandra_gauss_fwhm4710_128x128_flux_33x33.fits",
+    "flux": "chandra_gauss_fwhm4710_128x128_mod*{name}.fits",
     "npred": "chandra_gauss_fwhm4710_128x128_npred_33x33.fits",
 }
 
 FILE_PATTERN_XMM = {
     "counts": "xmm_*_sim*_{bkg_level}_{name}*iter*.fits",
     "psf": "xmm_gauss_fwhm14130_128x128_psf_63x63.fits",
-    "flux": "xmm_gauss_fwhm14130_128x128_psf_63x63.fits",
+    "flux": "xmm_gauss_fwhm14130_128x128_mod*{name}.fits",
     "npred": "chandra_gauss_fwhm4710_128x128_npred_33x33.fits",
 }
 
@@ -52,6 +52,17 @@ def to_shape(data, shape):
     return np.pad(data, pad_width, mode="constant")
 
 
+def read_deconvolution_result(filename):
+    """Read deconvolution result"""
+    from jolideco import MAPDeconvolverResult
+    from pylira import LIRADeconvolverResult
+
+    if "jolideco" in str(filename):
+        return MAPDeconvolverResult.read(filename)
+    else:
+        return LIRADeconvolverResult.read(filename)
+
+
 def read_config(filename):
     """Read config"""
     log.info(f"Reading {filename}")
@@ -69,14 +80,23 @@ def get_instrument_and_idx(filename):
     return instrument, idx
 
 
-def get_filenames_counts(instrument, bkg_level, name):
+def read_flux_ref(instrument, bkg_level, name):
+    """Read reference flux"""
+    filename = get_filenames(instrument, bkg_level, name, quantity="flux")[0]
+
+    flux_ref = fits.getdata(filename).astype(np.float32)
+
+    return flux_ref
+
+
+def get_filenames(instrument, bkg_level, name, quantity="counts"):
     """Find files"""
     path = Path(f"data") / DATA_PATH[instrument]
 
     if name == "point-sources":
         name = ""
 
-    pattern = FILE_PATTERN[instrument]["counts"].format(bkg_level=bkg_level, name=name)
+    pattern = FILE_PATTERN[instrument][quantity].format(bkg_level=bkg_level, name=name)
 
     return list(path.glob(pattern))
 
@@ -118,8 +138,8 @@ def read_datasets_all(prefix, bkg_level, name):
     datasets_all = {}
 
     for instrument in INSTRUMENTS[prefix]:
-        filename_counts = get_filenames_counts(
-            instrument=instrument, bkg_level=bkg_level, name=name
+        filename_counts = get_filenames(
+            instrument=instrument, bkg_level=bkg_level, name=name, quantity="counts"
         )
         datasets = read_datasets(filenames_counts=filename_counts)
         datasets_all.update(datasets)

@@ -3,8 +3,12 @@ prefix: {prefix}
 bkg_level: {bkg_level}
 name: {name}
 plot:
-    asinh_a: 0.01
-    max_cut: {max_value}
+  flux:
+    norm:
+      asinh_a: 0.01
+      max_cut: {max_value}
+      min_cut: 0
+      stretch: "asinh"
 runs:
   - name: pylira
     method: lira

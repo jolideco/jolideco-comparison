@@ -42,7 +42,7 @@ PREFIXES = ["chandra", "xmm", "joint"]
 with Path("config/template.yaml").open("r") as f:
     config_template = yaml.safe_load(f)
 
-METHODS = [_["name"].lower().replace(" ", "-") for _ in config_template["runs"]]
+METHODS = [_["name"] for _ in config_template["runs"]]
 
 include: "rules/init-config.smk"
 include: "rules/run-comparison.smk"

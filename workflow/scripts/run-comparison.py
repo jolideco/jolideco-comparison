@@ -6,11 +6,12 @@ import numpy as np
 import yaml
 from astropy.io import fits
 
-# from jolideco.core import MAPDeconvolver
-# from jolideco.models import FluxComponents
-
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
+
+DEBUG = True
+
+RANDOM_STATE = np.random.RandomState(7362)
 
 INSTRUMENTS = {
     "chandra": ["chandra"],
@@ -101,13 +102,13 @@ def read_datasets(filenames_counts):
     return datasets
 
 
-def read_datasets_all(config):
+def read_datasets_all(prefix, bkg_level, name):
     """Read all datasets"""
     datasets_all = {}
 
-    for instrument in INSTRUMENTS[config["prefix"]]:
+    for instrument in INSTRUMENTS[prefix]:
         filename_counts = get_filenames_counts(
-            instrument=instrument, bkg_level=config["bkg_level"], name=config["name"]
+            instrument=instrument, bkg_level=bkg_level, name=name
         )
         datasets = read_datasets(filenames_counts=filename_counts)
         datasets_all.update(datasets)
@@ -115,8 +116,8 @@ def read_datasets_all(config):
     return datasets_all
 
 
-def prepare_datasets_lira(datasets):
-    """Prepare datasets for LIRA"""
+def stack_datasets(datasets):
+    """Stack datasets"""
     datasets = copy.deepcopy(datasets)
     stacked = datasets.popitem()[1]
 
@@ -124,55 +125,90 @@ def prepare_datasets_lira(datasets):
         for key, value in dataset.items():
             stacked[key] += value
 
+    return stacked
+
+
+def prepare_datasets_lira(datasets):
+    """Prepare datasets for LIRA"""
+    stacked = stack_datasets(datasets=datasets)
     # TODO: this is a possible bug in Pylira...
     stacked["background"] = stacked["background"] / stacked["exposure"]
-    
-    return stacked
+    return datasets
 
 
 def prepare_datasets_jolideco(datasets):
     """Prepare datasets for jolideco"""
     datasets = copy.deepcopy(datasets)
-   
+
     for dataset in datasets.values():
         dataset["psf"] = {"flux": dataset["psf"]}
-    
+
     return datasets
 
 
-def run_jolideco(datasets):
+def get_flux_init(datasets):
+    """Get flux init"""
+    stacked = stack_datasets(datasets=datasets)
+
+    flux = stacked["counts"] / stacked["exposure"] - stacked["background"]
+
+    flux_init = np.clip(flux, 0, np.inf)
+
+    # flux_init = RANDOM_STATE.gamma(flux_mean, size=flux.shape).astype(np.float32)
+    return flux_init.astype(np.float32)
+
+
+def run_jolideco(datasets, config):
     """Run jolideco"""
+    from jolideco.core import MAPDeconvolver
+    from jolideco.models import FluxComponents
+
     datasets = prepare_datasets_jolideco(datasets=datasets)
-    
-    components = FluxComponents.from_dict()
 
-    deconvolver = MAPDeconvolver()
+    config["components"]["flux"]["flux_init"] = get_flux_init(datasets=datasets)
+    components = FluxComponents.from_dict(config["components"])
+
+    deconvolver = MAPDeconvolver(**config["deconvolver"])
     result = deconvolver.run(datasets=datasets, components=components)
-    result.write()
+    return result
 
 
-def run_pylira(datasets):
+def run_pylira(datasets, config):
     """Run LIRA"""
+    from pylira import Deconvolver
+
     dataset = prepare_datasets_lira(datasets=datasets)
 
-    dataset["flux_init"] = 
+    dataset["flux_init"] = get_flux_init(datasets=datasets)
+
+    deconvolver = Deconvolver(**config["deconvolver"])
     result = deconvolver.run(data=dataset)
+    return result
 
 
-def run_comparison(config):
-    datasets = read_datasets_all(config)
-
-    print(datasets.keys())
-    for run in config["runs"]:
-        if run["method"] == "jolideco":
-            run_jolideco(datasets)
-        elif run["method"] == "lira":
-            run_pylira(datasets)
-        else:
-            raise ValueError(f"Unknown run: {run['method']}")
+def run_deconvolution(datasets, config_run):
+    """Run deconvolution"""
+    if config_run["method"] == "jolideco":
+        return run_jolideco(datasets, config=config_run)
+    elif config_run["method"] == "lira":
+        return run_pylira(datasets, config=config_run)
+    else:
+        raise ValueError(f"Unknown method: {config_run['method']}")
 
 
 if __name__ == "__main__":
     config = read_config(snakemake.input[0])
 
-    run_comparison(config)
+    datasets = read_datasets_all(
+        prefix=snakemake.wildcards.prefix,
+        bkg_level=snakemake.wildcards.bkg_level,
+        name=snakemake.wildcards.name,
+    )
+
+    for config_run in config["runs"]:
+        if config_run["name"] == snakemake.wildcards.method:
+            break
+
+    result = run_deconvolution(datasets=datasets, config_run=config_run)
+
+    result.write(snakemake.output[0])

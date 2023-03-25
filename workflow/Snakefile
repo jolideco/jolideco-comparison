@@ -8,23 +8,7 @@ from pathlib import Path
 
 report: "report/workflow.rst"
 
-BKG_LEVELS = {
-    "bg1": 0.01,
-    "bg2": 0.1,
-    "bg3": 1,
-}
-
-NAMES = [
-    "point-sources",
-    "disk1",
-    "disk2",
-    "disk3",
-    "spiral1",
-    "spiral2",
-    "spiral3",
-    "spiral4",
-    "spiral5"
-]
+configfile : "config/config.yaml"
 
 MAX_VALUES = {
     "point-sources": 340.0,
@@ -39,8 +23,6 @@ MAX_VALUES = {
 }
 
 
-PREFIXES = ["chandra", "xmm", "joint"]
-
 with Path("config/template.yaml").open("r") as f:
     config_template = yaml.safe_load(f)
 
@@ -54,4 +36,4 @@ include: "rules/plot-results.smk"
 # all rule 
 rule all:
     input:
-        expand("results/{name}/{bkg_level}/{prefix}/{method}/images/flux.png", name=NAMES, bkg_level=BKG_LEVELS, prefix=PREFIXES, method=METHODS)
+        expand("results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux.png", scenario=config["scenarios"], bkg_level=config["bkg_levels"], prefix=config["prefixes"], method=METHODS)

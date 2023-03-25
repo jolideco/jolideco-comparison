@@ -1,0 +1,18 @@
+prefixes:
+  - chandra
+  - xmm
+  - joint
+bkg_levels:
+  bg1: 0.01
+  bg2: 0.1
+  bg3: 1.
+scenarios:
+  - point-sources
+  - disk1
+  - disk2
+  - disk3
+  - sprial1
+  - sprial2
+  - sprial3
+  - sprial4
+  - sprial5

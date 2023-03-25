@@ -1,7 +1,7 @@
 title: {title}
 prefix: {prefix}
 bkg_level: {bkg_level}
-name: {name}
+scenario: {scenario}
 plot:
   flux:
     norm:

@@ -94,7 +94,7 @@ if __name__ == "__main__":
     datasets = read_datasets_all(
         prefix=snakemake.wildcards.prefix,
         bkg_level=snakemake.wildcards.bkg_level,
-        name=snakemake.wildcards.name,
+        name=snakemake.wildcards.scenario,
     )
 
     for config_run in config["runs"]:

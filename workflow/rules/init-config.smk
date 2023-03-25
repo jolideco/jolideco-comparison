@@ -2,9 +2,9 @@ rule init_config:
     input:
         "config/template.yaml"
     output:
-        "config/{name}/{bkg_level}/{prefix}.yaml"
+        "config/{scenario}/{bkg_level}/{prefix}.yaml"
     log:
-        "logs/init-config/{name}-{bkg_level}-{prefix}.log"
+        "logs/init-config/{scenario}-{bkg_level}-{prefix}.log"
     run:
         import logging
         from pathlib import Path
@@ -16,15 +16,15 @@ rule init_config:
         with path.open("r") as f:
             template = f.read()
 
-        max_value = MAX_VALUES[wildcards.name]
-        title = f"{wildcards.name.title()} {wildcards.bkg_level.title()} {wildcards.prefix.title()}"
+        max_value = MAX_VALUES[wildcards.scenario]
+        title = f"{wildcards.scenario.title()} {wildcards.bkg_level.title()} {wildcards.prefix.title()}"
 
         template_filled = template.format(
                         title=title,
                         prefix=wildcards.prefix,
                         bkg_level=wildcards.bkg_level,
                         max_value=max_value,
-                        name=wildcards.name
+                        scenario=wildcards.scenario
                     )
 
         path = Path(output[0])

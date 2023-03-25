@@ -296,7 +296,7 @@ def npred_jolideco(flux, dataset):
 
 if __name__ == "__main__":
     kwargs = {
-        "name": snakemake.wildcards.name,
+        "name": snakemake.wildcards.scenario,
         "bkg_level": snakemake.wildcards.bkg_level,
         "prefix": snakemake.wildcards.prefix,
     }

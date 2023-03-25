@@ -1,0 +1,6 @@
+prefixes:
+  - chandra
+bkg_levels:
+  bg1: 0.01
+scenarios:
+  - point-sources

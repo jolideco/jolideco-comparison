@@ -73,6 +73,17 @@ def read_config(filename):
     return config
 
 
+def read_sub_config(filename, method):
+    """Read sub config"""
+    config = read_config(filename)
+
+    for config_run in config["runs"]:
+        if config_run["name"] == method:
+            return config_run
+    else:
+        raise ValueError(f"Method {method} not found in {filename}")
+
+
 def get_instrument_and_idx(filename):
     """Get instrument and idx from filename"""
     parts = filename.stem.split("_")

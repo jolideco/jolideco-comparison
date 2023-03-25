@@ -1,7 +1,7 @@
 import copy
 
 import numpy as np
-from utils import read_config, read_datasets_all, stack_datasets
+from utils import read_datasets_all, read_sub_config, stack_datasets
 
 DEBUG = True
 
@@ -89,17 +89,13 @@ def run_deconvolution(datasets, config_run):
 
 
 if __name__ == "__main__":
-    config = read_config(snakemake.input[0])
+    config_run = read_sub_config(snakemake.input[0], method=snakemake.wildcards.method)
 
     datasets = read_datasets_all(
         prefix=snakemake.wildcards.prefix,
         bkg_level=snakemake.wildcards.bkg_level,
         name=snakemake.wildcards.scenario,
     )
-
-    for config_run in config["runs"]:
-        if config_run["name"] == snakemake.wildcards.method:
-            break
 
     result = run_deconvolution(datasets=datasets, config_run=config_run)
 

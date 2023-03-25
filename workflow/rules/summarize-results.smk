@@ -1,9 +1,12 @@
-rule NAME:
+rule summarize_results:
     input:
-        "table.txt"
+        "config/{scenario}/{bkg_level}/{prefix}.yaml",
+        "results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux.png",
+        "results/{scenario}/{bkg_level}/{prefix}/{method}/images/npred.png",
+        "results/{scenario}/{bkg_level}/{prefix}/{method}/images/trace.png",
     output:
-        "plots/myplot.pdf"
-    conda:
-        "envs/ggplot.yaml"
+        "results/{scenario}/{bkg_level}/{prefix}/{method}/summary.html"
+    log:
+        "logs/summarize-results/{scenario}-{bkg_level}-{method}-{prefix}.log"
     script:
-        "scripts/plot-stuff.R"
+        "../scripts/summarize-results.py"

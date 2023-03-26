@@ -1,13 +1,8 @@
+import shutil
 from pathlib import Path
 
-import docutils.core
 from jinja2 import Environment, FileSystemLoader
 from utils import read_sub_config
-
-
-def rst_to_html(rst):
-    """Convert reStructuredText to HTML"""
-    return docutils.core.publish_parts(source=rst, writer_name="html")["html_body"]
 
 
 def get_deconvolver_configuration(config):
@@ -25,21 +20,42 @@ def get_deconvolver_configuration(config):
     return str(deconvolver) + "\n"
 
 
-def render_rst_jinja(config):
-    """Render HTML"""
-    environment = Environment(loader=FileSystemLoader("workflow/report/"))
-    template = environment.get_template("summary-run-template.rst")
+def render_and_write_rst(filename, template_name, **kwargs):
+    """Render RST"""
+    environment = Environment(loader=FileSystemLoader("workflow/site/templates"))
+    template = environment.get_template(template_name)
 
+    rst_rendered = template.render(**kwargs)
+
+    with Path(filename).open("w") as f:
+        f.write(rst_rendered)
+
+
+def render_summary(filename, config):
+    """Render summary"""
     configuration = get_deconvolver_configuration(config=config)
     title = config["name"].replace("-", " ").title()
-    return template.render(title=title, configuration=configuration)
+
+    render_and_write_rst(
+        filename=filename,
+        template_name="summary.rst",
+        title=title,
+        configuration=configuration,
+    )
+
+
+def render_index(filename):
+    """Render index"""
+    render_and_write_rst(
+        filename=filename,
+        template_name="index.rst",
+    )
 
 
 if __name__ == "__main__":
     config = read_sub_config(snakemake.input[0], method=snakemake.wildcards.method)
 
-    rst_rendered = render_rst_jinja(config=config)
-    html_rendered = rst_to_html(rst_rendered)
+    render_summary(snakemake.output[0], config=config)
+    render_index("results/index.rst")
 
-    with Path(snakemake.output[0]).open("w") as f:
-        f.write(html_rendered)
+    shutil.copyfile("workflow/site/conf.py", "results/conf.py")

@@ -1,7 +1,8 @@
 Jolideco Comparison
 ===================
 
-Jolideco comparison webpage.
+This webpage shows the results from an extensive comparison of the Jolideco method to
+other deconvolution algorithms. 
 
 
 .. toctree::

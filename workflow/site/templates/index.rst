@@ -1,4 +1,12 @@
 Jolideco Comparison
 ===================
 
-Jolideco compariosn Webpage.
+Jolideco comparison webpage.
+
+
+.. toctree::
+   :maxdepth: 2
+
+   {% for filename in filenames_toctree %}
+   {{ filename|indent(3, False) }}
+   {% endfor %}{{ '\n' }}

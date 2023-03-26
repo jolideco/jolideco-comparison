@@ -26,18 +26,17 @@ MAX_VALUES = {
 with Path("config/template.yaml").open("r") as f:
     config_template = yaml.safe_load(f)
 
-METHODS = [_["name"] for _ in config_template["runs"]]
+config["methods"] = [_["name"] for _ in config_template["runs"]]
 
 include: "rules/init-config.smk"
 include: "rules/run-comparison.smk"
 include: "rules/plot-results.smk"
 include: "rules/summarize-results.smk"
+include: "rules/prepare-site.smk"
 include: "rules/build-site.smk"
 
-print(config)
 # all rule 
 rule all:
     input:
-        expand("results/{scenario}/{bkg_level}/{prefix}/{method}/summary.rst", scenario=config["scenarios"], bkg_level=config["bkg_levels"], prefix=config["prefixes"], method=METHODS),
-        expand("results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux.png", scenario=config["scenarios"], bkg_level=config["bkg_levels"], prefix=config["prefixes"], method=METHODS),
+        expand("results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux.png", scenario=config["scenarios"], bkg_level=config["bkg_levels"], prefix=config["prefixes"], method=config["methods"]),
         directory("site")

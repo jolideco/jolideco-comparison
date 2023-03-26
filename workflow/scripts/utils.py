@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 import yaml
 from astropy.io import fits
+from jinja2 import Environment, FileSystemLoader
 
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -183,3 +184,14 @@ def stack_datasets(datasets):
             stacked[key] += value
 
     return stacked
+
+
+def render_and_write_rst(filename, template_name, **kwargs):
+    """Render RST"""
+    environment = Environment(loader=FileSystemLoader("workflow/site/templates"))
+    template = environment.get_template(template_name)
+
+    rst_rendered = template.render(**kwargs)
+
+    with Path(filename).open("w") as f:
+        f.write(rst_rendered)

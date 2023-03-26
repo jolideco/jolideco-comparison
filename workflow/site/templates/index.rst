@@ -5,9 +5,11 @@ This webpage shows the results from an extensive comparison of the Jolideco meth
 other deconvolution algorithms. 
 
 
+{% for subtitle, filenames in filenames_toctree.items() %}
 .. toctree::
-   :maxdepth: 2
-
-   {% for filename in filenames_toctree %}
+   :maxdepth: 1
+   :caption: {{ subtitle }}
+   {% for filename in filenames %}
    {{ filename|indent(3, False) }}
    {% endfor %}{{ '\n' }}
+{% endfor %}

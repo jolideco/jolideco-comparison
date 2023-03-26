@@ -1,6 +1,10 @@
 prefixes:
   - chandra
+  - xmm
+  - joint
 bkg_levels:
   bg1: 0.01
 scenarios:
   - point-sources
+  - disk1
+  - spiral1

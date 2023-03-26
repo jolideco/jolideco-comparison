@@ -5,7 +5,7 @@ rule summarize_results:
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/npred.png",
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/trace.png",
     output:
-        "results/{scenario}/{bkg_level}/{prefix}/{method}/summary.rst",
+        "results/{scenario}/{bkg_level}/{prefix}/{method}/index.rst",
     log:
         "logs/summarize-results/{scenario}-{bkg_level}-{method}-{prefix}.log"
     script:

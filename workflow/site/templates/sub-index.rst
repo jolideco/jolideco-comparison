@@ -2,7 +2,7 @@
 {{ "=" * title|length }}
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    {% for filename in filenames_toctree %}
    {{ filename|indent(3, False) }}

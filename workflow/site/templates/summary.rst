@@ -1,11 +1,11 @@
 {{ title }}
 {{ "=" * title|length }}
 
-.. contents:: Table of Contents
-
 
 Configuration
 -------------
+This is the configuration the deconvolution was run with:
+
 ::
 
     {{ configuration|indent(4, False) }}
@@ -14,8 +14,11 @@ Configuration
 Flux
 ----
 
+
 .. image:: images/flux.png
     :width: 600
+
+    The plot shows the deconvolved flux image, the reference flux and residuals.
 
 
 Predicted Counts

@@ -102,9 +102,9 @@ def get_instrument_and_idx(filename):
     return instrument, idx
 
 
-def read_flux_ref(name):
+def read_flux_ref(scenario):
     """Read reference flux"""
-    filename = get_filenames("chandra", bkg_level="", name=name, quantity="flux")[0]
+    filename = get_filenames("chandra", bkg_level="", name=scenario, quantity="flux")[0]
 
     flux_ref = fits.getdata(filename).astype(np.float32)
 

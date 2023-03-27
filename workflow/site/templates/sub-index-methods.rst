@@ -12,7 +12,7 @@ Results Overview
      - {{ method }}
      {% endfor %}
 
-   * - .. image:: ../../flux-thumbnail.png
+   * - .. image:: ../../images/flux-true-thumbnail.png
           :align: center
 
      {% for method in methods %}

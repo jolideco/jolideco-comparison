@@ -5,6 +5,7 @@ rule site_render_index:
         expand("results/{scenario}/{bkg_level}/{prefix}/images/exposure.png", scenario=config["scenarios"], bkg_level=config["bkg_levels"], prefix=config["prefixes"]),
         expand("results/{scenario}/{bkg_level}/{prefix}/images/background.png", scenario=config["scenarios"], bkg_level=config["bkg_levels"], prefix=config["prefixes"]),
         expand("results/{scenario}/{bkg_level}/{prefix}/images/psf.png", scenario=config["scenarios"], bkg_level=config["bkg_levels"], prefix=config["prefixes"]),
+        expand("results/{scenario}/images/flux-true-thumbnail.png", scenario=config["scenarios"]),
     output:
         "results/index.rst"
     log:

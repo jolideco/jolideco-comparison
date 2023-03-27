@@ -7,6 +7,7 @@ other deconvolution algorithms.
 
 {% for subtitle, filenames in filenames_toctree.items() %}
 .. toctree::
+   :hidden:
    :maxdepth: 1
    :caption: {{ subtitle }}
    {% for filename in filenames %}

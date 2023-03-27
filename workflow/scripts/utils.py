@@ -133,7 +133,6 @@ def get_filenames(instrument, bkg_level, name, quantity="counts"):
     pattern = FILE_PATTERN[instrument][quantity].format(
         bkg_level=bkg_level, name=name, group_idx=group_idx
     )
-    print(pattern)
     return list(path.glob(pattern))
 
 

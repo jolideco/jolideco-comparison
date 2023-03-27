@@ -25,7 +25,8 @@ Results Overview
           :target: {{ "{method}/index.html".format(method=method) }}
      {% endfor %}
 
-   * {% for method in methods %}
+   * - 
+     {% for method in methods %}
      - Value = 1234
      {% endfor %}
 

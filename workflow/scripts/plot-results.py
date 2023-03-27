@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.convolution import convolve_fft
 from astropy.visualization import simple_norm
+from plot import DPI, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE, plot_flux_thumbnail
 from utils import (
     read_config,
     read_datasets_all,
@@ -11,8 +12,6 @@ from utils import (
     read_flux_ref,
     stack_datasets,
 )
-
-from .plot import DPI, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE, plot_flux_thumbnail
 
 log = logging.getLogger(__name__)
 

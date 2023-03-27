@@ -7,6 +7,6 @@ rule site_render_summary:
     output:
         "results/{scenario}/{bkg_level}/{prefix}/{method}/index.rst",
     log:
-        "logs/summarize-results/{scenario}-{bkg_level}-{method}-{prefix}.log"
+        "logs/site-render-summary/{scenario}-{bkg_level}-{method}-{prefix}.log"
     script:
         "../scripts/site-render-summary.py"

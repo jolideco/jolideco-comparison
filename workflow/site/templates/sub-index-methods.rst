@@ -11,11 +11,15 @@ Results Overview
 .. list-table:: 
    :header-rows: 1
 
-   * {% for method in methods %}
+   * - Ground Truth
+     {% for method in methods %}
      - {{ method }}
      {% endfor %}
 
-   * {% for method in methods %}
+   * - .. image:: ../../flux-thumbnail.png
+          :align: center
+
+     {% for method in methods %}
      - .. image:: {{ "{method}/images/flux-thumbnail.png".format(method=method) }}
           :align: center
           :target: {{ "{method}/index.html".format(method=method) }}

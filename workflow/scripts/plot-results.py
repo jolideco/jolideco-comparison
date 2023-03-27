@@ -10,17 +10,11 @@ from utils import (
     read_deconvolution_result,
     read_flux_ref,
     stack_datasets,
-    to_shape,
 )
 
-log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+from .plot import DPI, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE, plot_flux_thumbnail
 
-FIGSIZE = (5, 4)
-FIGSIZE_WIDE = (13, 4)
-FIGSIZE_THUMBNAIL = (1, 1)
-DPI = 300
-AXES_RECT = [0.11, 0.11, 0.87, 0.87]
+log = logging.getLogger(__name__)
 
 
 def plot_flux(flux, flux_ref, filename, config):
@@ -103,21 +97,6 @@ def plot_npred(npred, npred_ref, filename, config):
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_flux_thumbnail(flux, filename, config):
-    """Plot flux thumbnail"""
-    fig = plt.figure(figsize=FIGSIZE_THUMBNAIL)
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_axis_off()
-
-    kwargs = config["plot"]["flux"]["norm"]
-    kwargs["max_cut"] = 5 * kwargs["max_cut"]
-    norm = simple_norm(flux_ref, **kwargs)
-
-    ax.imshow(flux, norm=norm, origin="lower")
-    log.info(f"Writing {filename}")
-    plt.savefig(filename, dpi=DPI)
-
-
 def plot_counts_thumbnail(counts, filename, config):
     """Plot counts thumbnail"""
     fig = plt.figure(figsize=FIGSIZE_THUMBNAIL)
@@ -148,98 +127,6 @@ def plot_traces_jolideco(result, filename):
 
     log.info(f"Writing {filename}")
     plt.savefig(filename, dpi=DPI // 2)
-
-
-def plot_exposure(comparison_config):
-    exposure = comparison_config.datasets_stacked["exposure"]
-
-    fig = plt.figure(figsize=FIGSIZE)
-    ax = fig.add_axes(AXES_RECT)
-
-    im = ax.imshow(exposure, origin="lower")
-
-    ax.set_xlabel("x / pix")
-    ax.set_ylabel("y / pix")
-    fig.colorbar(im, ax=ax)
-
-    filename = comparison_config.filename_exposure_image
-    log.info(f"Writing {filename}")
-    plt.savefig(filename, dpi=DPI)
-
-
-def plot_psf(comparison_config):
-    psf = comparison_config.datasets_stacked["psf"]
-
-    shape = comparison_config.datasets_stacked["counts"].shape
-    psf = to_shape(psf, shape=shape)
-
-    fig = plt.figure(figsize=FIGSIZE)
-    ax = fig.add_axes(AXES_RECT)
-
-    norm = simple_norm(
-        psf,
-        min_cut=0,
-        stretch="asinh",
-        asinh_a=0.1,
-    )
-
-    im = ax.imshow(psf, norm=norm, origin="lower")
-
-    ax.set_xlabel("x / pix")
-    ax.set_ylabel("y / pix")
-    fig.colorbar(im, ax=ax)
-
-    filename = comparison_config.filename_psf_image
-    log.info(f"Writing {filename}")
-    plt.savefig(filename, dpi=DPI)
-
-
-def plot_counts(comparison_config):
-    counts = comparison_config.datasets_stacked["counts"]
-
-    fig = plt.figure(figsize=FIGSIZE)
-    ax = fig.add_axes(AXES_RECT)
-
-    norm = simple_norm(
-        counts,
-        min_cut=0,
-        stretch="asinh",
-        asinh_a=0.1,
-    )
-
-    im = ax.imshow(counts, norm=norm, origin="lower", interpolation="None")
-
-    ax.set_xlabel("x / pix")
-    ax.set_ylabel("y / pix")
-    fig.colorbar(im, ax=ax)
-
-    filename = comparison_config.filename_counts_image
-    log.info(f"Writing {filename}")
-    plt.savefig(filename, dpi=DPI)
-
-
-def plot_background(comparison_config):
-    background = comparison_config.datasets_stacked["background"]
-
-    fig = plt.figure(figsize=FIGSIZE)
-    ax = fig.add_axes(AXES_RECT)
-
-    im = ax.imshow(background, origin="lower")
-
-    ax.set_xlabel("x / pix")
-    ax.set_ylabel("y / pix")
-    fig.colorbar(im, ax=ax)
-
-    filename = comparison_config.filename_background_image
-    log.info(f"Writing {filename}")
-    plt.savefig(filename, dpi=DPI)
-
-
-def plot_dataset(comparison_config):
-    plot_psf(comparison_config=comparison_config)
-    plot_counts(comparison_config=comparison_config)
-    plot_exposure(comparison_config=comparison_config)
-    plot_background(comparison_config=comparison_config)
 
 
 def npred_pylira(flux, dataset):

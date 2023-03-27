@@ -6,6 +6,7 @@ rule plot_results:
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/npred.png",
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/trace.png",
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux-thumbnail.png",
+        "results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux-true-thumbnail.png",
     log:
         "logs/plot-results/{scenario}-{bkg_level}-{method}-{prefix}.log"
     script:

@@ -22,23 +22,33 @@ DATA_PATH = {
 }
 
 FILE_PATTERN_CHANDRA = {
-    "counts": "chandra_*_sim*_{bkg_level}_{name}*iter*.fits",
+    "counts": "chandra_gauss_fwhm4710_128x128_sim0{group_idx}_{bkg_level}_{name}*iter*.fits",
     "psf": "chandra_gauss_fwhm4710_128x128_psf_33x33.fits",
-    "flux": "chandra_gauss_fwhm4710_128x128_mod*{name}.fits",
-    "npred": "chandra_gauss_fwhm4710_128x128_img*{name}.fits",
+    "flux": "chandra_gauss_fwhm4710_128x128_mod0{group_idx}*{name}.fits",
+    "npred": "chandra_gauss_fwhm4710_128x128_img0{group_idx}*{name}.fits",
 }
 
 FILE_PATTERN_XMM = {
-    "counts": "xmm_*_sim*_{bkg_level}_{name}*iter*.fits",
+    "counts": "xmm_gauss_fwhm14130_128x128_sim0{group_idx}_{bkg_level}_{name}*iter*.fits",
     "psf": "xmm_gauss_fwhm14130_128x128_psf_63x63.fits",
-    "flux": "xmm_gauss_fwhm14130_128x128_mod*{name}.fits",
-    "npred": "xmm_gauss_fwhm14130_128x128_img*{name}.fits",
+    "flux": "xmm_gauss_fwhm14130_128x128_mod0{group_idx}*{name}.fits",
+    "npred": "xmm_gauss_fwhm14130_128x128_img0{group_idx}*{name}.fits",
 }
 
 FILE_PATTERN = {
     "chandra": FILE_PATTERN_CHANDRA,
     "xmm": FILE_PATTERN_XMM,
 }
+
+
+def get_group_idx(name):
+    """Get group index"""
+    if "disk" in name:
+        return 2
+    elif "spiral" in name:
+        return 3
+    else:
+        return 1
 
 
 def to_shape(data, shape):
@@ -119,7 +129,11 @@ def get_filenames(instrument, bkg_level, name, quantity="counts"):
     if name == "point-sources":
         name = ""
 
-    pattern = FILE_PATTERN[instrument][quantity].format(bkg_level=bkg_level, name=name)
+    group_idx = get_group_idx(name=name)
+    pattern = FILE_PATTERN[instrument][quantity].format(
+        bkg_level=bkg_level, name=name, group_idx=group_idx
+    )
+    print(pattern)
     return list(path.glob(pattern))
 
 

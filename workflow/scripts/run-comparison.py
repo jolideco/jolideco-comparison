@@ -54,7 +54,7 @@ def run_jolideco(datasets, config):
     deconvolver = MAPDeconvolver(**config["deconvolver"])
 
     if DEBUG:
-        deconvolver.n_epochs = 1
+        deconvolver.n_epochs = 5
 
     datasets = prepare_datasets_jolideco(datasets=datasets)
     result = deconvolver.run(datasets=datasets, components=components)
@@ -72,7 +72,7 @@ def run_pylira(datasets, config):
     deconvolver = LIRADeconvolver(**config["deconvolver"])
 
     if DEBUG:
-        deconvolver.n_iter_max = 1
+        deconvolver.n_iter_max = 5
 
     result = deconvolver.run(data=dataset)
     return result

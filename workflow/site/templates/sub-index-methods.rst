@@ -4,7 +4,30 @@
 Dataset
 -------
 
-TODO: Add dataset image
+.. list-table:: 
+   :header-rows: 1
+
+   * - Counts
+     - PSF
+     - Exposure
+     - Background
+
+   * - .. figure:: images/counts.png
+          :width: 200px
+          :align: center
+     
+     - .. figure:: images/psf.png
+          :width: 200px
+          :align: center
+     
+     - .. figure:: images/exposure.png
+          :width: 200px
+          :align: center
+     
+     - .. figure:: images/background.png
+          :width: 200px
+          :align: center
+
 
 Results Overview
 ----------------

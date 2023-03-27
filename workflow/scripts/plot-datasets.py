@@ -3,17 +3,13 @@ import logging
 import matplotlib.pyplot as plt
 from astropy.visualization import simple_norm
 from plot import AXES_RECT, DPI, FIGSIZE
-from utils import to_shape
-
-from .plot import AXES_RECT, DPI, FIGSIZE, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE
+from utils import read_datasets_all, stack_datasets, to_shape
 
 log = logging.getLogger(__name__)
 
 
-def plot_exposure(comparison_config):
+def plot_exposure(exposure, filename):
     """Plot exposure image."""
-    exposure = comparison_config.datasets_stacked["exposure"]
-
     fig = plt.figure(figsize=FIGSIZE)
     ax = fig.add_axes(AXES_RECT)
 
@@ -23,18 +19,12 @@ def plot_exposure(comparison_config):
     ax.set_ylabel("y / pix")
     fig.colorbar(im, ax=ax)
 
-    filename = comparison_config.filename_exposure_image
     log.info(f"Writing {filename}")
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_psf(comparison_config):
+def plot_psf(psf, filename):
     """Plot PSF image."""
-    psf = comparison_config.datasets_stacked["psf"]
-
-    shape = comparison_config.datasets_stacked["counts"].shape
-    psf = to_shape(psf, shape=shape)
-
     fig = plt.figure(figsize=FIGSIZE)
     ax = fig.add_axes(AXES_RECT)
 
@@ -51,15 +41,12 @@ def plot_psf(comparison_config):
     ax.set_ylabel("y / pix")
     fig.colorbar(im, ax=ax)
 
-    filename = comparison_config.filename_psf_image
     log.info(f"Writing {filename}")
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_counts(comparison_config):
+def plot_counts(counts, filename):
     """Plot counts image."""
-    counts = comparison_config.datasets_stacked["counts"]
-
     fig = plt.figure(figsize=FIGSIZE)
     ax = fig.add_axes(AXES_RECT)
 
@@ -76,15 +63,12 @@ def plot_counts(comparison_config):
     ax.set_ylabel("y / pix")
     fig.colorbar(im, ax=ax)
 
-    filename = comparison_config.filename_counts_image
     log.info(f"Writing {filename}")
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_background(comparison_config):
+def plot_background(background, filename):
     """Plot background image."""
-    background = comparison_config.datasets_stacked["background"]
-
     fig = plt.figure(figsize=FIGSIZE)
     ax = fig.add_axes(AXES_RECT)
 
@@ -94,14 +78,22 @@ def plot_background(comparison_config):
     ax.set_ylabel("y / pix")
     fig.colorbar(im, ax=ax)
 
-    filename = comparison_config.filename_background_image
     log.info(f"Writing {filename}")
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_dataset(comparison_config):
-    """Plot dataset."""
-    plot_psf(comparison_config=comparison_config)
-    plot_counts(comparison_config=comparison_config)
-    plot_exposure(comparison_config=comparison_config)
-    plot_background(comparison_config=comparison_config)
+if __name__ == "__main__":
+    datasets = read_datasets_all(
+        scenario=snakemake.wildcards.scenario,
+        bkg_level=snakemake.wildcards.bkg_level,
+        prefix=snakemake.wildcards.prefix,
+    )
+
+    stacked = stack_datasets(datasets)
+
+    plot_counts(counts=stacked["counts"], filename=snakemake.output[0])
+    plot_exposure(exposure=stacked["exposure"], filename=snakemake.output[1])
+    plot_background(background=stacked["background"], filename=snakemake.output[2])
+
+    stacked["psf"] = to_shape(stacked["psf"], shape=stacked["counts"].shape)
+    plot_psf(psf=stacked["psf"], filename=snakemake.output[3])

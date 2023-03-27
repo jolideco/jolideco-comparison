@@ -43,7 +43,8 @@ def plot_flux(flux, flux_ref, filename, config):
     axes[1].set_title("$Flux_{Ref}$")
     fig.colorbar(im, ax=axes[1])
 
-    residual = (flux - flux_ref) / np.sqrt(flux_ref)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        residual = np.nan_to_num((flux - flux_ref) / np.sqrt(flux_ref))
 
     im = axes[2].imshow(residual, origin="lower", vmin=-2, vmax=2, cmap="RdBu")
 
@@ -82,7 +83,8 @@ def plot_npred(npred, npred_ref, filename, config):
     axes[1].set_title("$Npred_{Ref}$")
     fig.colorbar(im, ax=axes[1])
 
-    residual = (npred - npred_ref) / np.sqrt(npred_ref)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        residual = np.nan_to_num((npred - npred_ref) / np.sqrt(npred_ref))
 
     im = axes[2].imshow(residual, origin="lower", vmin=-2, vmax=2, cmap="RdBu")
 
@@ -146,7 +148,7 @@ def npred_jolideco(flux, dataset):
 
 if __name__ == "__main__":
     kwargs = {
-        "name": snakemake.wildcards.scenario,
+        "scenario": snakemake.wildcards.scenario,
         "bkg_level": snakemake.wildcards.bkg_level,
         "prefix": snakemake.wildcards.prefix,
     }
@@ -155,7 +157,7 @@ if __name__ == "__main__":
     datasets = read_datasets_all(**kwargs)
     dataset = stack_datasets(datasets=datasets)
 
-    flux_ref = read_flux_ref(name=kwargs["name"])
+    flux_ref = read_flux_ref(name=kwargs["scenario"])
 
     if "pylira" in snakemake.wildcards.method:
         plot_trace_lira(result=result, filename=snakemake.output[2])
@@ -169,7 +171,7 @@ if __name__ == "__main__":
         npred = npred_jolideco(flux=flux, dataset=dataset)
         npred_ref = npred_jolideco(flux=flux_ref, dataset=dataset)
 
-    path = "config/{name}/{bkg_level}/{prefix}.yaml".format(**kwargs)
+    path = "config/{scenario}/{bkg_level}/{prefix}.yaml".format(**kwargs)
     config = read_config(path)
 
     plot_flux(

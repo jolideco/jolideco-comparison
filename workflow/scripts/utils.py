@@ -168,13 +168,13 @@ def read_datasets(filenames_counts):
     return datasets
 
 
-def read_datasets_all(prefix, bkg_level, name):
+def read_datasets_all(prefix, bkg_level, scenario):
     """Read all datasets"""
     datasets_all = {}
 
     for instrument in INSTRUMENTS[prefix]:
         filename_counts = get_filenames(
-            instrument=instrument, bkg_level=bkg_level, name=name, quantity="counts"
+            instrument=instrument, bkg_level=bkg_level, name=scenario, quantity="counts"
         )
         datasets = read_datasets(filenames_counts=filename_counts)
         datasets_all.update(datasets)

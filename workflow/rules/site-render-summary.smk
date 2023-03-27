@@ -1,4 +1,4 @@
-rule summarize_results:
+rule site_render_summary:
     input:
         "config/{scenario}/{bkg_level}/{prefix}.yaml",
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux.png",
@@ -9,4 +9,4 @@ rule summarize_results:
     log:
         "logs/summarize-results/{scenario}-{bkg_level}-{method}-{prefix}.log"
     script:
-        "../scripts/summarize-results.py"
+        "../scripts/site-render-summary.py"

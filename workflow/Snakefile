@@ -31,9 +31,9 @@ config["methods"] = [_["name"] for _ in config_template["runs"]]
 include: "rules/init-config.smk"
 include: "rules/run-comparison.smk"
 include: "rules/plot-results.smk"
-include: "rules/summarize-results.smk"
-include: "rules/prepare-site.smk"
-include: "rules/build-site.smk"
+include: "rules/site-render-summary.smk"
+include: "rules/site-render-index.smk"
+include: "rules/site-build.smk"
 
 # all rule 
 rule all:

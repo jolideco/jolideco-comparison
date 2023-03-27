@@ -189,6 +189,8 @@ def stack_datasets(datasets):
 def render_and_write_rst(filename, template_name, **kwargs):
     """Render RST"""
     environment = Environment(loader=FileSystemLoader("workflow/site/templates"))
+    environment.globals.update(zip=zip)
+
     template = environment.get_template(template_name)
 
     rst_rendered = template.render(**kwargs)

@@ -103,67 +103,31 @@ def plot_npred(npred, npred_ref, filename, config):
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_flux_thumbnail(run_config, comparison_config):
-    flux = run_config.flux
-
+def plot_flux_thumbnail(flux, filename, config):
+    """Plot flux thumbnail"""
     fig = plt.figure(figsize=FIGSIZE_THUMBNAIL)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_axis_off()
 
-    flux_ref = comparison_config.flux_ground_truth
-
-    norm = simple_norm(
-        flux_ref,
-        min_cut=0,
-        max_cut=comparison_config.plot["max_cut"],
-        stretch="asinh",
-        asinh_a=comparison_config.plot["asinh_a"],
-    )
+    kwargs = config["plot"]["flux"]["norm"]
+    kwargs["max_cut"] = 5 * kwargs["max_cut"]
+    norm = simple_norm(flux_ref, **kwargs)
 
     ax.imshow(flux, norm=norm, origin="lower")
-    filename = run_config.filename_flux_thumbnail
     log.info(f"Writing {filename}")
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_flux_reference_thumbnail(comparison_config):
-    flux_ref = comparison_config.flux_ground_truth
-
+def plot_counts_thumbnail(counts, filename, config):
+    """Plot counts thumbnail"""
     fig = plt.figure(figsize=FIGSIZE_THUMBNAIL)
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_axis_off()
-
-    norm = simple_norm(
-        flux_ref,
-        min_cut=0,
-        max_cut=comparison_config.plot["max_cut"],
-        stretch="asinh",
-        asinh_a=comparison_config.plot["asinh_a"],
-    )
-
-    ax.imshow(flux_ref, norm=norm, origin="lower")
-    filename = comparison_config.filename_ground_truth_thumbnail
-    log.info(f"Writing {filename}")
-    plt.savefig(filename, dpi=DPI)
-
-
-def plot_counts_thumbnail(comparison_config):
-    counts = comparison_config.datasets_stacked["counts"]
-
-    fig = plt.figure(figsize=FIGSIZE_THUMBNAIL)
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_axis_off()
-
-    norm = simple_norm(
-        counts,
-        min_cut=0,
-        max_cut=5 * comparison_config.plot["max_cut"],
-        stretch="asinh",
-        asinh_a=0.1,
-    )
+    kwargs = config["plot"]["flux"]["norm"]
+    kwargs["max_cut"] = 5 * kwargs["max_cut"]
+    norm = simple_norm(flux_ref, **kwargs)
 
     ax.imshow(counts, norm=norm, origin="lower")
-    filename = comparison_config.filename_counts_thumbnail
     log.info(f"Writing {filename}")
     plt.savefig(filename, dpi=DPI)
 
@@ -326,6 +290,12 @@ if __name__ == "__main__":
         flux=flux,
         flux_ref=flux_ref,
         filename=snakemake.output[0],
+        config=config,
+    )
+
+    plot_flux_thumbnail(
+        flux=flux,
+        filename=snakemake.output[3],
         config=config,
     )
 

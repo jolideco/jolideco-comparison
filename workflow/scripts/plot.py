@@ -20,7 +20,7 @@ def plot_flux_thumbnail(flux, filename, config):
     ax.set_axis_off()
 
     kwargs = config["plot"]["flux"]["norm"]
-    kwargs["max_cut"] = 5 * kwargs["max_cut"]
+    kwargs["max_cut"] = kwargs["max_cut"]
     norm = simple_norm(flux, **kwargs)
 
     ax.imshow(flux, norm=norm, origin="lower")

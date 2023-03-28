@@ -6,4 +6,6 @@ rule site_build:
     log:
         "logs/site-build/sphinx.log"
     shell:
-        "sphinx-build results site"       
+        "cp workflow/site/conf.py results/;"
+        "cp -r workflow/site/_static results/;"
+        "sphinx-build results site;"

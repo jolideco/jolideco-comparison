@@ -1,5 +1,4 @@
 import itertools
-import shutil
 
 from utils import render_and_write_rst
 
@@ -19,37 +18,16 @@ def render_index(filename):
     )
 
 
-def render_sub_index(
-    filename, title, sub_pages, template_name="sub-index.rst", **kwargs
-):
+def render_sub_index(filename, title, sub_pages, **kwargs):
     """Render sub index"""
     filenames_toctree = [f"{sub_page}/index.rst" for sub_page in sub_pages]
 
     render_and_write_rst(
         filename=filename,
-        template_name=template_name,
+        template_name="sub-index.rst",
         filenames_toctree=filenames_toctree,
         title=title.title(),
         **kwargs,
-    )
-
-
-def render_sub_index_methods(
-    filename, title, sub_pages, template_name="sub-index.rst", **kwargs
-):
-    """Render sub index"""
-    filenames_toctree = [f"{sub_page}/index" for sub_page in sub_pages]
-    filenames_images = [
-        f"{sub_page}/images/flux-thumbnail.png" for sub_page in sub_pages
-    ]
-
-    render_and_write_rst(
-        filename=filename,
-        template_name=template_name,
-        filenames_toctree=filenames_toctree,
-        title=title.title(),
-        filenames_images=filenames_images,
-        methods=sub_pages,
     )
 
 
@@ -69,17 +47,17 @@ if __name__ == "__main__":
             sub_pages=bkg_levels,
         )
         for bkg_level in bkg_levels:
-            render_sub_index(
-                f"results/{scenario}/{bkg_level}/index.rst",
-                title=bkg_level,
-                sub_pages=prefixes,
+            render_and_write_rst(
+                filename=f"results/{scenario}/{bkg_level}/index.rst",
+                template_name="sub-index-prefixes.rst",
+                title=bkg_level.title(),
+                methods=methods,
+                prefixes=prefixes,
             )
             for prefix in prefixes:
-                render_sub_index_methods(
-                    f"results/{scenario}/{bkg_level}/{prefix}/index.rst",
-                    title=prefix,
-                    sub_pages=methods,
+                render_and_write_rst(
+                    filename=f"results/{scenario}/{bkg_level}/{prefix}/index.rst",
                     template_name="sub-index-methods.rst",
+                    title=prefix.title(),
+                    methods=methods,
                 )
-
-    shutil.copyfile("workflow/site/conf.py", "results/conf.py")

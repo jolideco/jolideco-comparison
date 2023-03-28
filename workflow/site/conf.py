@@ -26,3 +26,4 @@ language = "Python"
 html_theme = "sphinxawesome_theme"
 extensions = ["sphinxawesome_theme"]
 html_static_path = ["_static"]
+html_css_files = ["custom.css"]

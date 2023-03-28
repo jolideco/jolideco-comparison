@@ -157,7 +157,7 @@ if __name__ == "__main__":
     datasets = read_datasets_all(**kwargs)
     dataset = stack_datasets(datasets=datasets)
 
-    flux_ref = read_flux_ref(name=kwargs["scenario"])
+    flux_ref = read_flux_ref(scenario=kwargs["scenario"])
 
     if "pylira" in snakemake.wildcards.method:
         plot_trace_lira(result=result, filename=snakemake.output[2])

@@ -16,7 +16,7 @@ Flux
 
 
 .. figure:: images/flux.png
-    :width: 600
+    :width: 1000
 
     The plot shows the deconvolved flux image, the reference flux and residuals.
 
@@ -25,7 +25,7 @@ Predicted Counts
 ----------------
 
 .. figure:: images/npred.png
-    :width: 600
+    :width: 1000
 
     The plot shows the predicted counts correspoding to the deconvolved flux image,
     the reference flux and residuals.
@@ -35,7 +35,7 @@ Trace
 -----
 
 .. figure:: images/trace.png
-    :width: 600
+    :width: 1000
 
 
 Files

@@ -11,7 +11,10 @@ report: "report/workflow.rst"
 configfile : "config/config.yaml"
 
 MAX_VALUES = {
-    "point-sources": 340.0,
+    "point1": 340.0,
+    "aster1": 100.0,
+    "aster2": 500.0,
+    "aster3": 1000.0,
     "disk1": 500,
     "disk2": 500,
     "disk3": 500,

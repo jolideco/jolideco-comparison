@@ -17,22 +17,22 @@ INSTRUMENTS = {
 }
 
 DATA_PATH = {
-    "chandra": "sims_chandra_gauss_fwhm4710_128x128",
-    "xmm": "sims_xmm_gauss_fwhm14130_128x128",
+    "chandra": "chandra_gauss_fwhm4710_128x128",
+    "xmm": "xmm_gauss_fwhm14130_128x128",
 }
 
 FILE_PATTERN_CHANDRA = {
-    "counts": "chandra_gauss_fwhm4710_128x128_sim0{group_idx}_{bkg_level}_{name}*iter*.fits",
+    "counts": "chandra_gauss_fwhm4710_128x128_sim0*_{bkg_level}_{name}_iter*.fits",
     "psf": "chandra_gauss_fwhm4710_128x128_psf_33x33.fits",
-    "flux": "chandra_gauss_fwhm4710_128x128_mod0{group_idx}*{name}.fits",
-    "npred": "chandra_gauss_fwhm4710_128x128_img0{group_idx}*{name}.fits",
+    "flux": "chandra_gauss_fwhm4710_128x128_mod0*{name}.fits",
+    "npred": "chandra_gauss_fwhm4710_128x128_img0*{name}.fits",
 }
 
 FILE_PATTERN_XMM = {
-    "counts": "xmm_gauss_fwhm14130_128x128_sim0{group_idx}_{bkg_level}_{name}*iter*.fits",
+    "counts": "xmm_gauss_fwhm14130_128x128_sim0*_{bkg_level}_{name}_iter*.fits",
     "psf": "xmm_gauss_fwhm14130_128x128_psf_63x63.fits",
-    "flux": "xmm_gauss_fwhm14130_128x128_mod0{group_idx}*{name}.fits",
-    "npred": "xmm_gauss_fwhm14130_128x128_img0{group_idx}*{name}.fits",
+    "flux": "xmm_gauss_fwhm14130_128x128_mod0*{name}.fits",
+    "npred": "xmm_gauss_fwhm14130_128x128_img0*{name}.fits",
 }
 
 FILE_PATTERN = {
@@ -47,8 +47,12 @@ def get_group_idx(name):
         return 2
     elif "spiral" in name:
         return 3
-    else:
+    elif "point" in name:
         return 1
+    elif "aster" in name:
+        return 0
+    else:
+        raise ValueError(f"Invalid source name: {name}")
 
 
 def to_shape(data, shape):
@@ -126,13 +130,13 @@ def get_filenames(instrument, bkg_level, name, quantity="counts"):
     """Find files"""
     path = Path(f"data") / DATA_PATH[instrument]
 
-    if name == "point-sources":
-        name = ""
-
-    group_idx = get_group_idx(name=name)
+    # group_idx = get_group_idx(name=name)
     pattern = FILE_PATTERN[instrument][quantity].format(
-        bkg_level=bkg_level, name=name, group_idx=group_idx
+        bkg_level=bkg_level,
+        name=name,
     )
+    print(pattern)
+    print(list(path.glob(pattern)))
     return list(path.glob(pattern))
 
 

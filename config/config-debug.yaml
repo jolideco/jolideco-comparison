@@ -5,6 +5,7 @@ prefixes:
 bkg_levels:
   bg1: 0.01
 scenarios:
-  - point-sources
+  - point1
+  - aster1
   - disk1
   - spiral1

@@ -7,7 +7,10 @@ bkg_levels:
   bg2: 0.1
   bg3: 1.
 scenarios:
-  - point-sources
+  - point1
+  - aster1
+  - aster2
+  - aster3
   - disk1
   - disk2
   - disk3

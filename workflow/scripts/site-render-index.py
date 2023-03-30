@@ -3,7 +3,8 @@ import itertools
 from utils import render_and_write_rst
 
 FILENAMES_TOCTREE = {
-    "Point-Sources": ["point-sources/index.rst"],
+    "Point Sources": ["point1/index.rst"],
+    "Point Sources & Gaussian": [f"aster{idx}/index.rst" for idx in range(1, 4)],
     "Disks": [f"disk{idx}/index.rst" for idx in range(1, 4)],
     "Spirals": [f"spiral{idx}/index.rst" for idx in range(1, 6)],
 }

@@ -17,8 +17,8 @@ INSTRUMENTS = {
 }
 
 DATA_PATH = {
-    "chandra": "chandra_gauss_fwhm4710_128x128",
-    "xmm": "xmm_gauss_fwhm14130_128x128",
+    "chandra": "",  # "chandra_gauss_fwhm4710_128x128",
+    "xmm": "",  # "xmm_gauss_fwhm14130_128x128",
 }
 
 FILE_PATTERN_CHANDRA = {
@@ -135,8 +135,6 @@ def get_filenames(instrument, bkg_level, name, quantity="counts"):
         bkg_level=bkg_level,
         name=name,
     )
-    print(pattern)
-    print(list(path.glob(pattern)))
     return list(path.glob(pattern))
 
 

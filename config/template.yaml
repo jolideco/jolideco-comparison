@@ -41,7 +41,7 @@ runs:
   - name: jolideco-patch-prior
     method: jolideco
     deconvolver:
-      n_epochs: 1000
+      n_epochs: 500
       beta: 1.0
       device: cuda:0
     components:
@@ -51,13 +51,12 @@ runs:
         prior:
           type: gmm-patches
           stride: 4
-          jitter: true
-          cycle_spin: True
-          cycle_spin_subpix: true
+          jitter: false
+          cycle_spin: true
+          cycle_spin_subpix: false
           device: cuda:0
           gmm:
             type: gleam-v0.1
             stride: 4
           norm:
-            type: fixed-max
-            max_value: {max_value}
+            type: identity

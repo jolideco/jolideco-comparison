@@ -3,7 +3,7 @@ import copy
 import numpy as np
 from utils import read_datasets_all, read_sub_config, stack_datasets
 
-DEBUG = True
+DEBUG = False
 
 RANDOM_STATE = np.random.RandomState(7362)
 

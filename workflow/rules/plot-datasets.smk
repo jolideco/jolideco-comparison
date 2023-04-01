@@ -6,5 +6,6 @@ rule plot_datasets:
         "results/{scenario}/{bkg_level}/{prefix}/images/psf.png",
     log:
         "logs/plot-datasets/{scenario}-{bkg_level}-{prefix}.log"
+    localrule: True
     script:
         "../scripts/plot-datasets.py"

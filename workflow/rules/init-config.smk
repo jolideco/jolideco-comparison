@@ -5,6 +5,7 @@ rule init_config:
         "config/{scenario}/{bkg_level}/{prefix}.yaml"
     log:
         "logs/init-config/{scenario}-{bkg_level}-{prefix}.log"
+    localrule: True
     run:
         import logging
         from pathlib import Path

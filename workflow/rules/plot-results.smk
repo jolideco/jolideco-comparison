@@ -8,5 +8,6 @@ rule plot_results:
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux-thumbnail.png",
     log:
         "logs/plot-results/{scenario}-{bkg_level}-{method}-{prefix}.log"
+    localrule: True
     script:
         "../scripts/plot-results.py"

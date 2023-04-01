@@ -8,5 +8,6 @@ rule site_render_summary:
         "results/{scenario}/{bkg_level}/{prefix}/{method}/index.rst",
     log:
         "logs/site-render-summary/{scenario}-{bkg_level}-{method}-{prefix}.log"
+    localrule: True
     script:
         "../scripts/site-render-summary.py"

@@ -1,0 +1,133 @@
+Jolideco Patch Prior Zoran Weiss
+================================
+
+
+Configuration
+-------------
+This is the configuration the deconvolution was run with:
+
+::
+
+    MAPDeconvolver
+    --------------
+
+      n_epochs              : 2000
+      beta                  : 1.000
+      learning_rate         : 0.100
+      compute_error         : False
+      stop_early            : False
+      stop_early_n_average  : 10
+      display_progress      : True
+      device                : cpu
+      optimizer             : adam
+
+
+
+
+
+Model Configuration
+-------------------
+This is the configuration the Jolideco model:
+
+::
+
+    FluxComponents
+    --------------
+
+      flux                  : 
+
+        use_log_flux        : True
+        upsampling_factor   : 1
+        frozen              : False
+        prior               : 
+
+          type              : gmm-patches
+          stride            : 4
+          cycle_spin        : False
+          cycle_spin_subpix : False
+          jitter            : False
+          gmm               : 
+
+            type            : zoran-weiss
+
+          norm              : 
+
+            type            : fixed-max
+            max_value       : 200.000
+
+          patch_norm        : 
+
+            type            : subtract-mean
+
+          device            : cuda:0
+
+
+
+
+
+
+
+
+Flux
+----
+
+
+.. figure:: images/flux.png
+    :width: 1000
+
+    The plot shows the deconvolved flux image, the reference flux and residuals.
+
+
+Predicted Counts
+----------------
+
+.. figure:: images/npred.png
+    :width: 1000
+
+    The plot shows the predicted counts correspoding to the deconvolved flux image,
+    the reference flux and residuals.
+
+
+Metrics
+-------
+
+.. list-table:: 
+   :header-rows: 1
+
+   * - Metric
+     - Value
+
+   
+   * - MSE
+     - 5.437
+   
+   * - NMI
+     - 1.01
+   
+   * - NRMSE
+     - 0.914
+   
+   * - SSI
+     - 0.982
+   
+
+MSE = Mean Squared Error,
+SSI = Structural Similarity Index,
+NMI = Normalized Mutual Information,
+NRMSE = Normalized Root Mean Squared Error
+
+
+
+Traces
+------
+
+.. figure:: images/trace.png
+    :width: 1000
+
+
+Files
+-----
+
+Results files for download:
+
+:download:`spiral1-bg2-jolideco-patch-prior-zoran-weiss-chandra-result.fits.gz`

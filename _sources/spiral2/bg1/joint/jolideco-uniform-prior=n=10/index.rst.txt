@@ -1,0 +1,115 @@
+Jolideco Uniform Prior=N=10
+===========================
+
+
+Configuration
+-------------
+This is the configuration the deconvolution was run with:
+
+::
+
+    MAPDeconvolver
+    --------------
+
+      n_epochs              : 10
+      beta                  : 1
+      learning_rate         : 0.100
+      compute_error         : False
+      stop_early            : False
+      stop_early_n_average  : 10
+      display_progress      : True
+      device                : cpu
+      optimizer             : adam
+
+
+
+
+
+Model Configuration
+-------------------
+This is the configuration the Jolideco model:
+
+::
+
+    FluxComponents
+    --------------
+
+      flux                  : 
+
+        use_log_flux        : True
+        upsampling_factor   : 1
+        frozen              : False
+        prior               : 
+
+          type              : uniform
+
+
+
+
+
+
+
+
+Flux
+----
+
+
+.. figure:: images/flux.png
+    :width: 1000
+
+    The plot shows the deconvolved flux image, the reference flux and residuals.
+
+
+Predicted Counts
+----------------
+
+.. figure:: images/npred.png
+    :width: 1000
+
+    The plot shows the predicted counts correspoding to the deconvolved flux image,
+    the reference flux and residuals.
+
+
+Metrics
+-------
+
+.. list-table:: 
+   :header-rows: 1
+
+   * - Metric
+     - Value
+
+   
+   * - MSE
+     - 6.176
+   
+   * - NMI
+     - 1.013
+   
+   * - NRMSE
+     - 0.97
+   
+   * - SSI
+     - 0.98
+   
+
+MSE = Mean Squared Error,
+SSI = Structural Similarity Index,
+NMI = Normalized Mutual Information,
+NRMSE = Normalized Root Mean Squared Error
+
+
+
+Traces
+------
+
+.. figure:: images/trace.png
+    :width: 1000
+
+
+Files
+-----
+
+Results files for download:
+
+:download:`spiral2-bg1-jolideco-uniform-prior=n=10-joint-result.fits.gz`

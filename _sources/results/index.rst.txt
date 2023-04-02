@@ -1,0 +1,63 @@
+Jolideco Comparison
+===================
+
+This webpage shows the results from an extensive comparison of the Jolideco method to
+other deconvolution algorithms. For the comparison we used:
+
+- Pylira: https://github.com/astrostat/pylira
+- Jolideco: https://github.com/jolideco/jolideco
+
+You can navigate through the results with the menu on the left.
+
+
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: Point Sources
+   
+   point1/index.rst
+   
+
+
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: Point Sources & Gaussian
+   
+   aster1/index.rst
+   
+   aster2/index.rst
+   
+   aster3/index.rst
+   
+
+
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: Disks
+   
+   disk1/index.rst
+   
+   disk2/index.rst
+   
+   disk3/index.rst
+   
+
+
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: Spirals
+   
+   spiral1/index.rst
+   
+   spiral2/index.rst
+   
+   spiral3/index.rst
+   
+   spiral4/index.rst
+   
+   spiral5/index.rst
+   
+

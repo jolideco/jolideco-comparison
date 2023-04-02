@@ -1,0 +1,93 @@
+Pylira
+======
+
+
+Configuration
+-------------
+This is the configuration the deconvolution was run with:
+
+::
+
+    LIRADeconvolver
+    ---------------
+
+        alpha_init           : [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+        n_iter_max           : 2000
+        n_burn_in            : 500
+        fit_background_scale : False
+        save_thin            : True
+        ms_ttlcnt_pr         : 1
+        ms_ttlcnt_exp        : 0.05
+        ms_al_kap1           : 0.0
+        ms_al_kap2           : 1000.0
+        ms_al_kap3           : 3.0
+
+
+
+
+
+
+
+Flux
+----
+
+
+.. figure:: images/flux.png
+    :width: 1000
+
+    The plot shows the deconvolved flux image, the reference flux and residuals.
+
+
+Predicted Counts
+----------------
+
+.. figure:: images/npred.png
+    :width: 1000
+
+    The plot shows the predicted counts correspoding to the deconvolved flux image,
+    the reference flux and residuals.
+
+
+Metrics
+-------
+
+.. list-table:: 
+   :header-rows: 1
+
+   * - Metric
+     - Value
+
+   
+   * - MSE
+     - 741191.657
+   
+   * - NMI
+     - 1.222
+   
+   * - NRMSE
+     - 26.874
+   
+   * - SSI
+     - 0.772
+   
+
+MSE = Mean Squared Error,
+SSI = Structural Similarity Index,
+NMI = Normalized Mutual Information,
+NRMSE = Normalized Root Mean Squared Error
+
+
+
+Traces
+------
+
+.. figure:: images/trace.png
+    :width: 1000
+
+
+Files
+-----
+
+Results files for download:
+
+:download:`disk3-bg2-pylira-joint-result.fits.gz`

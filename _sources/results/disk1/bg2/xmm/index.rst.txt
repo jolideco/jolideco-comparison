@@ -1,0 +1,176 @@
+Xmm
+===
+
+
+Results Overview
+----------------
+.. list-table:: 
+   :header-rows: 1
+
+   * - 
+     - Ground Truth
+     - Counts
+     
+     - jolideco-uniform-prior=n=10
+     
+     - jolideco-uniform-prior=n=1000
+     
+     - pylira
+     
+     - jolideco-patch-prior-zoran-weiss
+     
+     - jolideco-patch-prior-gleam-v0.1
+     
+
+   * - Flux
+     - .. image:: ../../images/flux-true-thumbnail.png
+          :target: ../../images/flux-true-thumbnail.png
+          :align: center
+          :width: 200px
+
+     - .. image:: images/counts-thumbnail.png
+          :target: images/counts-thumbnail.png
+          :align: center
+          :width: 200px
+
+     
+     - .. image:: jolideco-uniform-prior=n=10/images/flux-thumbnail.png
+          :target: jolideco-uniform-prior=n=10/index.html
+          :align: center
+          :width: 200px
+     
+     - .. image:: jolideco-uniform-prior=n=1000/images/flux-thumbnail.png
+          :target: jolideco-uniform-prior=n=1000/index.html
+          :align: center
+          :width: 200px
+     
+     - .. image:: pylira/images/flux-thumbnail.png
+          :target: pylira/index.html
+          :align: center
+          :width: 200px
+     
+     - .. image:: jolideco-patch-prior-zoran-weiss/images/flux-thumbnail.png
+          :target: jolideco-patch-prior-zoran-weiss/index.html
+          :align: center
+          :width: 200px
+     
+     - .. image:: jolideco-patch-prior-gleam-v0.1/images/flux-thumbnail.png
+          :target: jolideco-patch-prior-gleam-v0.1/index.html
+          :align: center
+          :width: 200px
+     
+
+   * - SSI
+     - 1
+     - 
+     
+     - 0.895
+     
+     - 0.958
+     
+     - 0.807
+     
+     - 0.951
+     
+     - 0.945
+     
+
+   * - MSE
+     - 0
+     - 
+     
+     - 807.366
+     
+     - 1781.333
+     
+     - 452999.036
+     
+     - 6860.203
+     
+     - 1095.054
+     
+
+   * - NRMSE
+     - 0
+     - 
+     
+     - 0.887
+     
+     - 1.318
+     
+     - 21.014
+     
+     - 2.586
+     
+     - 1.033
+     
+
+   * - NMI
+     - 0
+     - 
+     
+     - 1.052
+     
+     - 1.333
+     
+     - 1.194
+     
+     - 1.102
+     
+     - 1.191
+     
+
+
+MSE = Mean Squared Error,
+SSI = Structural Similarity Index,
+NMI = Normalized Mutual Information,
+NRMSE = Normalized Root Mean Squared Error
+
+
+Dataset
+-------
+
+.. list-table:: 
+   :header-rows: 1
+
+   * - Counts
+     - PSF
+     - Exposure
+     - Background
+
+   * - .. figure:: images/counts.png
+          :width: 200px
+          :align: center
+     
+     - .. figure:: images/psf.png
+          :width: 200px
+          :align: center
+     
+     - .. figure:: images/exposure.png
+          :width: 200px
+          :align: center
+     
+     - .. figure:: images/background.png
+          :width: 200px
+          :align: center
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   
+   
+   jolideco-uniform-prior=n=10/index.rst
+   
+   
+   jolideco-uniform-prior=n=1000/index.rst
+   
+   
+   pylira/index.rst
+   
+   
+   jolideco-patch-prior-zoran-weiss/index.rst
+   
+   
+   jolideco-patch-prior-gleam-v0.1/index.rst
+   

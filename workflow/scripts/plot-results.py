@@ -2,9 +2,11 @@ import logging
 
 import matplotlib.pyplot as plt
 import numpy as np
+import yaml
 from astropy.convolution import convolve_fft
 from astropy.visualization import simple_norm
 from plot import DPI, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE, plot_flux_thumbnail
+from skimage import metrics
 from utils import (
     read_config,
     read_datasets_all,
@@ -14,6 +16,27 @@ from utils import (
 )
 
 log = logging.getLogger(__name__)
+
+METRICS = {
+    "MSE": metrics.mean_squared_error,
+    "SSI": metrics.structural_similarity,
+}
+
+
+def compute_metrics(flux, flux_ref):
+    """Compute metrics"""
+    results = {}
+
+    for name, metric in METRICS.items():
+        if name == "SSI":
+            data_range = flux_ref.max() - flux_ref.min()
+            value = metric(flux, flux_ref, data_range=data_range)
+        else:
+            value = metric(flux, flux_ref)
+
+        results[name] = value
+
+    return results
 
 
 def plot_flux(flux, flux_ref, filename, config):
@@ -170,6 +193,13 @@ if __name__ == "__main__":
         flux = result.flux_total
         npred = npred_jolideco(flux=flux, dataset=dataset)
         npred_ref = npred_jolideco(flux=flux_ref, dataset=dataset)
+
+    metrics = compute_metrics(flux=flux, flux_ref=flux_ref)
+
+    log.info(f"Writing {snakemake.output[4]}")
+
+    with open(snakemake.output[4], "w") as f:
+        yaml.dump(metrics, f)
 
     path = "config/{scenario}/{bkg_level}/{prefix}.yaml".format(**kwargs)
     config = read_config(path)

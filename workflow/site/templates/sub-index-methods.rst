@@ -19,10 +19,14 @@ Results Overview
      {% for method in methods %}
      - .. image:: {{ "{method}/images/flux-thumbnail.png".format(method=method) }}
           :align: center
-          :target: {{ "{method}/index.html".format(method=method) }}
           :width: 200px
      {% endfor %}
 
+   * -
+     {% for method in methods %}
+     - :doc:`Details <{{ "{method}/index.rst".format(method=method) }}>`  
+     {% endfor %}
+  
    * - 
      {% for method in methods %}
      - Value = 1234

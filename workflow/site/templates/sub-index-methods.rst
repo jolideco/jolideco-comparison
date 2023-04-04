@@ -7,12 +7,15 @@ Results Overview
 .. list-table:: 
    :header-rows: 1
 
-   * - Ground Truth
+   * - 
+     - Ground Truth
      {% for method in methods %}
      - {{ method }}
      {% endfor %}
 
-   * - .. image:: ../../images/flux-true-thumbnail.png
+   * - Flux
+     - .. image:: ../../images/flux-true-thumbnail.png
+          :target: ../../images/flux-true-thumbnail.png
           :align: center
           :width: 200px
 
@@ -23,9 +26,16 @@ Results Overview
           :width: 200px
      {% endfor %}
 
-   * - 
+   * - SSI
+     - 1
      {% for method in methods %}
-     - Value = 1234
+     - {{ metrics[method]["SSI"] }}
+     {% endfor %}
+
+   * - MSE
+     - 0
+     {% for method in methods %}
+     - {{ metrics[method]["MSE"] }}
      {% endfor %}
 
 

@@ -1,5 +1,6 @@
-import itertools
+from pathlib import Path
 
+import yaml
 from utils import render_and_write_rst
 
 FILENAMES_TOCTREE = {
@@ -8,6 +9,18 @@ FILENAMES_TOCTREE = {
     "Disks": [f"disk{idx}/index.rst" for idx in range(1, 4)],
     "Spirals": [f"spiral{idx}/index.rst" for idx in range(1, 6)],
 }
+
+
+def read_metrics(path, methods):
+    """Read metrics"""
+    metrics = {}
+
+    for method in methods:
+        filename = Path(path) / f"{method}/metrics.yaml"
+        with Path(filename).open("r") as f:
+            metrics[method] = yaml.safe_load(f)
+
+    return metrics
 
 
 def render_index(filename):
@@ -56,9 +69,13 @@ if __name__ == "__main__":
                 prefixes=prefixes,
             )
             for prefix in prefixes:
+                metrics = read_metrics(
+                    path=f"results/{scenario}/{bkg_level}/{prefix}/", methods=methods
+                )
                 render_and_write_rst(
                     filename=f"results/{scenario}/{bkg_level}/{prefix}/index.rst",
                     template_name="sub-index-methods.rst",
                     title=prefix.title(),
                     methods=methods,
+                    metrics=metrics,
                 )

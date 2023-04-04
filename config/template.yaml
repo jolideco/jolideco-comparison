@@ -5,14 +5,14 @@ scenario: {scenario}
 plot:
   flux:
     norm:
-      asinh_a: 0.01
+      asinh_a: 0.001
       max_cut: {max_value}
       min_cut: 0
       stretch: "asinh"
   npred:
     norm:
       asinh_a: 0.1
-      max_cut: {max_value}
+      max_cut: {max_value_npred}
       min_cut: 0
       stretch: "asinh"
 runs:

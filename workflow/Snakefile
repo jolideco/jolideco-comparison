@@ -10,22 +10,22 @@ report: "report/workflow.rst"
 
 configfile : "config/config.yaml"
 
+def get_max_values(pattern="*_mod*_*.fits"):
+    """Get max values"""
+    data_path = Path("data/")
+    
+    max_values = {}
 
-MAX_VALUES = {
-    "aster1": 100.0,
-    "aster2": 500.0,
-    "aster3": 1000.0,
-    "point1": 340.0,
-    "disk1": 500,
-    "disk2": 500,
-    "disk3": 500,
-    "spiral1": 200,
-    "spiral2": 200,
-    "spiral3": 200,
-    "spiral4": 200,
-    "spiral5": 1000,
-}
+    for filename in sorted(data_path.glob(pattern)):
+        data = fits.getdata(filename)
+        key = filename.stem.split("_")[-1]
+        max_values[key] = data.max()
+    
+    return max_values
 
+
+MAX_VALUES = get_max_values()
+MAX_VALUES_NPRED = get_max_values(pattern="*_img*_*.fits")
 
 with Path("config/template.yaml").open("r") as f:
     config_template = yaml.safe_load(f)

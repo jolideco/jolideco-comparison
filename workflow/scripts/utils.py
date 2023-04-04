@@ -55,6 +55,18 @@ def get_group_idx(name):
         raise ValueError(f"Invalid source name: {name}")
 
 
+def get_bkg_level(filename):
+    """Get background level"""
+    if "bg1" in filename:
+        return 0.01
+    elif "bg2" in filename:
+        return 0.1
+    elif "bg3" in filename:
+        return 1.0
+
+    raise ValueError(f"Cannot get backgrounnd level from: {filename}")
+
+
 def to_shape(data, shape):
     """Pad array to shape"""
     y_pad = shape[0] - data.shape[0]
@@ -144,7 +156,9 @@ def read_dataset(filename_counts, filename_psf):
     psf = fits.getdata(filename_psf).astype(np.float32)
 
     exposure = np.ones_like(counts)
-    background = np.zeros_like(counts)
+
+    bkg_level = get_bkg_level(filename_counts)
+    background = bkg_level * np.ones_like(counts)
 
     return {
         "counts": counts,

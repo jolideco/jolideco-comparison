@@ -11,6 +11,18 @@ This is the configuration the deconvolution was run with:
     {{ configuration|indent(4, False) }}
 
 
+{% if model_configuration %}
+Model Configuration
+-------------------
+This is the configuration the Jolideco model:
+
+::
+
+    {{ model_configuration|indent(4, False) }}
+
+{% endif %}
+
+
 Flux
 ----
 

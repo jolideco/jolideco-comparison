@@ -18,6 +18,7 @@ rule init_config:
             template = f.read()
 
         max_value = MAX_VALUES[wildcards.scenario]
+        max_value_npred = MAX_VALUES_NPRED[wildcards.scenario]
         title = f"{wildcards.scenario.title()} {wildcards.bkg_level.title()} {wildcards.prefix.title()}"
 
         template_filled = template.format(
@@ -25,6 +26,7 @@ rule init_config:
                         prefix=wildcards.prefix,
                         bkg_level=wildcards.bkg_level,
                         max_value=max_value,
+                        max_value_npred=max_value_npred,
                         scenario=wildcards.scenario
                     )
 

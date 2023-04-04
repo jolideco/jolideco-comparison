@@ -5,6 +5,7 @@
 
 import yaml
 from pathlib import Path
+from astropy.io import fits
 
 report: "report/workflow.rst"
 
@@ -45,4 +46,4 @@ include: "rules/site-build.smk"
 rule all:
     input:
         expand("results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux.png", scenario=config["scenarios"], bkg_level=config["bkg_levels"], prefix=config["prefixes"], method=config["methods"]),
-        directory("site")
+        "site/index.html"

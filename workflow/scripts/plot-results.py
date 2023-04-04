@@ -34,7 +34,7 @@ def compute_metrics(flux, flux_ref):
         else:
             value = metric(flux, flux_ref)
 
-        results[name] = value
+        results[name] = float(value)
 
     return results
 

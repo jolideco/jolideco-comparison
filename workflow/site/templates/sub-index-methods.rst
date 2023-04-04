@@ -17,16 +17,12 @@ Results Overview
           :width: 200px
 
      {% for method in methods %}
-     - .. image:: {{ "{method}/images/flux-thumbnail.png".format(method=method) }}
+     - .. image:: {{ "{method_}/images/flux-thumbnail.png".format(method_=method) }}
+          :target: {{ "{method_}/index.html".format(method_=method) }}
           :align: center
           :width: 200px
      {% endfor %}
 
-   * -
-     {% for method in methods %}
-     - :doc:`Details <{{ "{method}/index.rst".format(method=method) }}>`  
-     {% endfor %}
-  
    * - 
      {% for method in methods %}
      - Value = 1234

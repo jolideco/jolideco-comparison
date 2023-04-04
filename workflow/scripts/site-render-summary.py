@@ -1,3 +1,7 @@
+from pathlib import Path
+
+import numpy as np
+import yaml
 from utils import read_sub_config, render_and_write_rst
 
 
@@ -21,6 +25,7 @@ def get_model_configuration(config):
     from jolideco.models import FluxComponents
 
     if config["method"] == "jolideco":
+        config["components"]["flux"]["flux_upsampled"] = np.zeros((128, 128))
         components = FluxComponents.from_dict(config["components"])
         return str(components) + "\n"
 
@@ -37,16 +42,20 @@ def render_summary(filename, config):
 
     title = config["name"].replace("-", " ").title()
 
+    with (filename.parent / "metrics.yaml").open("r") as f:
+        metrics = yaml.safe_load(f)
+
     render_and_write_rst(
         filename=filename,
         template_name="summary.rst",
         title=title,
         configuration=configuration,
         model_configuration=model_configuration,
+        metrics=metrics,
     )
 
 
 if __name__ == "__main__":
     config = read_sub_config(snakemake.input[0], method=snakemake.wildcards.method)
 
-    render_summary(snakemake.output[0], config=config)
+    render_summary(Path(snakemake.output[0]), config=config)

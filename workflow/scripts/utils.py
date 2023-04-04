@@ -57,6 +57,8 @@ def get_group_idx(name):
 
 def get_bkg_level(filename):
     """Get background level"""
+    filename = str(filename.stem)
+
     if "bg1" in filename:
         return 0.01
     elif "bg2" in filename:

@@ -15,6 +15,7 @@ dependencies:
   - scipy=1.10.1
   - sphinx=6.1
   - matplotlib=3.6
+  - scikit-image=0.19
   - pip:
       - pylira
       - sphinxawesome-theme

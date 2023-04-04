@@ -2,7 +2,7 @@ rule site_build:
     input:
         "results/index.rst"
     output:
-        directory("site/")
+        "site/index.html"
     log:
         "logs/site-build/sphinx.log"
     localrule: True

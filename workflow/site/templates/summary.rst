@@ -43,8 +43,26 @@ Predicted Counts
     the reference flux and residuals.
 
 
-Trace
------
+Metrics
+-------
+MSE = Mean Squared Error, SSI = Structural Similarity Index
+
+.. list-table:: 
+   :header-rows: 1
+
+   * - Metric
+     - Value
+
+   {% for name, value in metrics.items() %}
+   * - {{ name }}
+     - {{ value }}
+   {% endfor %}
+
+
+
+
+Traces
+------
 
 .. figure:: images/trace.png
     :width: 1000

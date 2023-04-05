@@ -67,7 +67,6 @@ Dataset
           :align: center
 
 .. toctree::
-   :hidden:
    :maxdepth: 1
 
    {% for method in methods %}

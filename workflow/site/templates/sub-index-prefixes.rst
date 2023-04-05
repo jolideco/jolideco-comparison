@@ -28,8 +28,7 @@
 
 
 .. toctree::
-   :hidden:
-   :maxdepth: 2
+   :maxdepth: 1
 
    {% for prefix in prefixes %}
    {% set filename ="{prefix}/index.rst".format(prefix=prefix) %}

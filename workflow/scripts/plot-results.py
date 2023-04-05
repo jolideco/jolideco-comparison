@@ -6,6 +6,7 @@ import yaml
 from astropy.convolution import convolve_fft
 from astropy.visualization import simple_norm
 from plot import DPI, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE, plot_flux_thumbnail
+from scipy.ndimage import gaussian_filter
 from skimage import metrics
 from utils import (
     read_config,

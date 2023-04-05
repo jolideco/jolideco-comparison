@@ -4,6 +4,7 @@ rule site_render_summary:
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/flux.png",
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/npred.png",
         "results/{scenario}/{bkg_level}/{prefix}/{method}/images/trace.png",
+        "results/{scenario}/{bkg_level}/{prefix}/{method}/{scenario}-{bkg_level}-{method}-{prefix}-result.fits.gz",
     output:
         "results/{scenario}/{bkg_level}/{prefix}/{method}/index.rst",
     log:

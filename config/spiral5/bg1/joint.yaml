@@ -38,7 +38,7 @@ runs:
       flux:
         prior:
           type: uniform
-  - name: jolideco-patch-prior
+  - name: jolideco-patch-prior-gleam-v0.1
     method: jolideco
     deconvolver:
       n_epochs: 500
@@ -57,6 +57,27 @@ runs:
           device: cuda:0
           gmm:
             type: gleam-v0.1
-            stride: 4
           norm:
             type: identity
+  - name: jolideco-patch-prior-zoran-weiss
+    method: jolideco
+    deconvolver:
+      n_epochs: 500
+      beta: 1.0
+      device: cuda:0
+    components:
+      flux:
+        upsampling_factor: 1
+        use_log_flux: true
+        prior:
+          type: gmm-patches
+          stride: 4
+          jitter: false
+          cycle_spin: false
+          cycle_spin_subpix: false
+          device: cuda:0
+          gmm:
+            type: zoran-weiss
+          norm:
+            type: fixed-max
+            max_value: 1000.0

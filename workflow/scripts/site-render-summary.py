@@ -35,7 +35,7 @@ def get_model_configuration(config):
         raise ValueError(f"Unknown method: {config['method']}")
 
 
-def render_summary(filename, config):
+def render_summary(filename, filename_result, config):
     """Render summary"""
     configuration = get_deconvolver_configuration(config=config)
     model_configuration = get_model_configuration(config=config)
@@ -52,10 +52,14 @@ def render_summary(filename, config):
         configuration=configuration,
         model_configuration=model_configuration,
         metrics=metrics,
+        filename_result=filename_result,
     )
 
 
 if __name__ == "__main__":
     config = read_sub_config(snakemake.input[0], method=snakemake.wildcards.method)
 
-    render_summary(Path(snakemake.output[0]), config=config)
+    filename_reult = Path(snakemake.output[4]).name
+    render_summary(
+        Path(snakemake.output[0]), config=config, filename_result=filename_reult
+    )

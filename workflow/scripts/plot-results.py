@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
     if "pylira" in snakemake.wildcards.method:
         plot_trace_lira(result=result, filename=snakemake.output[2])
-        flux = result.posterior_mean_from_trace
+        flux = result.posterior_mean
         npred = npred_pylira(flux=flux, dataset=dataset)
         npred_ref = npred_pylira(flux=flux_ref, dataset=dataset)
 

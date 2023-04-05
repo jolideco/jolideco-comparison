@@ -11,6 +11,9 @@ report: "report/workflow.rst"
 
 configfile : "config/config.yaml"
 
+envvars:
+    "JOLIDECO_GMM_LIBRARY"
+
 def get_max_values(pattern="*_mod*_*.fits"):
     """Get max values"""
     data_path = Path("data/")

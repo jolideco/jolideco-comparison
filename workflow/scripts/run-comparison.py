@@ -75,7 +75,7 @@ def run_pylira(datasets, config):
         deconvolver.n_iter_max = 5
 
     result = deconvolver.run(data=dataset)
-    return result
+    return result.reduce_to_mean_std()
 
 
 def run_deconvolution(datasets, config_run):

@@ -57,9 +57,15 @@ def render_summary(filename, filename_result, config):
 
 
 if __name__ == "__main__":
-    config = read_sub_config(snakemake.input[0], method=snakemake.wildcards.method)
+    config = read_sub_config(
+        snakemake.input.filename_config, method=snakemake.wildcards.method
+    )
 
-    filename_reult = Path(snakemake.input[4]).name
+    filename_result = Path(snakemake.input.filename_result).name
+    filename = Path(snakemake.output.filename_index)
+
     render_summary(
-        Path(snakemake.output[0]), config=config, filename_result=filename_reult
+        filename=filename,
+        config=config,
+        filename_result=filename_result,
     )

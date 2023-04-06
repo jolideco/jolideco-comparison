@@ -176,13 +176,15 @@ if __name__ == "__main__":
     flux_ref = fits.getdata(snakemake.input.filename_flux_ref)
 
     if "pylira" in snakemake.wildcards.method:
-        plot_trace_lira(result=result, filename=snakemake.output[2])
+        plot_trace_lira(result=result, filename=snakemake.output.filename_image_trace)
         flux = result.posterior_mean
         npred = npred_pylira(flux=flux, dataset=dataset)
         npred_ref = npred_pylira(flux=flux_ref, dataset=dataset)
 
     if "jolideco" in snakemake.wildcards.method:
-        plot_traces_jolideco(result=result, filename=snakemake.output[2])
+        plot_traces_jolideco(
+            result=result, filename=snakemake.output.filename_image_trace
+        )
         flux = result.flux_total
         npred = npred_jolideco(flux=flux, dataset=dataset)
         npred_ref = npred_jolideco(flux=flux_ref, dataset=dataset)
@@ -200,19 +202,19 @@ if __name__ == "__main__":
     plot_flux(
         flux=flux,
         flux_ref=flux_ref,
-        filename=snakemake.output[0],
+        filename=snakemake.output.filename_image_flux,
         config=config,
     )
 
     plot_flux_thumbnail(
         flux=flux,
-        filename=snakemake.output[3],
+        filename=snakemake.output.filename_image_flux_thumbnail,
         config=config,
     )
 
     plot_npred(
         npred=npred,
         npred_ref=npred_ref,
-        filename=snakemake.output[1],
+        filename=snakemake.output.filename_image_npred,
         config=config,
     )

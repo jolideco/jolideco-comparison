@@ -81,17 +81,6 @@ def get_instrument_and_idx(filename):
     return instrument, idx
 
 
-def read_npred_ref(instrument, name):
-    """Read reference npred"""
-    filename = get_filenames(
-        instrument=instrument, bkg_level="", name=name, quantity="npred"
-    )[0]
-
-    flux_ref = fits.getdata(filename).astype(np.float32)
-
-    return flux_ref
-
-
 def read_dataset(filename_counts, filename_psf):
     """Read single dataset"""
     counts = fits.getdata(filename_counts).astype(np.float32)

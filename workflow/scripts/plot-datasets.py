@@ -3,7 +3,7 @@ import logging
 import matplotlib.pyplot as plt
 from astropy.visualization import simple_norm
 from plot import AXES_RECT, DPI, FIGSIZE
-from utils import read_datasets_all, stack_datasets, to_shape
+from utils import read_datasets, stack_datasets, to_shape
 
 log = logging.getLogger(__name__)
 
@@ -83,10 +83,9 @@ def plot_background(background, filename):
 
 
 if __name__ == "__main__":
-    datasets = read_datasets_all(
-        scenario=snakemake.wildcards.scenario,
-        bkg_level=snakemake.wildcards.bkg_level,
-        prefix=snakemake.wildcards.prefix,
+    datasets = read_datasets(
+        filenames_counts=snakemake.input.counts,
+        filenames_psf=snakemake.input.psf,
     )
 
     stacked = stack_datasets(datasets)

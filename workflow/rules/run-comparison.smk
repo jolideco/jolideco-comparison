@@ -1,6 +1,7 @@
 rule run_comparison:
     input:
-        "config/{scenario}/{bkg_level}/{prefix}.yaml"
+        unpack(get_datasets_filenames),
+        config="config/{scenario}/{bkg_level}/{prefix}.yaml",
     output:
         "results/{scenario}/{bkg_level}/{prefix}/{method}/{scenario}-{bkg_level}-{method}-{prefix}-result.fits.gz"
     log:

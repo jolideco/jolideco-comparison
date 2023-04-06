@@ -10,54 +10,10 @@ from jinja2 import Environment, FileSystemLoader
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-INSTRUMENTS = {
-    "chandra": ["chandra"],
-    "xmm": ["xmm"],
-    "joint": ["chandra", "xmm"],
-}
-
-DATA_PATH = {
-    "chandra": "",  # "chandra_gauss_fwhm4710_128x128",
-    "xmm": "",  # "xmm_gauss_fwhm14130_128x128",
-}
-
-FILE_PATTERN_CHANDRA = {
-    "counts": "chandra_gauss_fwhm4710_128x128_sim0*_{bkg_level}_{name}_iter*.fits",
-    "psf": "chandra_gauss_fwhm4710_128x128_psf_33x33.fits",
-    "flux": "chandra_gauss_fwhm4710_128x128_mod0*{name}.fits",
-    "npred": "chandra_gauss_fwhm4710_128x128_img0*{name}.fits",
-}
-
-FILE_PATTERN_XMM = {
-    "counts": "xmm_gauss_fwhm14130_128x128_sim0*_{bkg_level}_{name}_iter*.fits",
-    "psf": "xmm_gauss_fwhm14130_128x128_psf_63x63.fits",
-    "flux": "xmm_gauss_fwhm14130_128x128_mod0*{name}.fits",
-    "npred": "xmm_gauss_fwhm14130_128x128_img0*{name}.fits",
-}
-
-FILE_PATTERN = {
-    "chandra": FILE_PATTERN_CHANDRA,
-    "xmm": FILE_PATTERN_XMM,
-}
-
-
-def get_group_idx(name):
-    """Get group index"""
-    if "disk" in name:
-        return 2
-    elif "spiral" in name:
-        return 3
-    elif "point" in name:
-        return 1
-    elif "aster" in name:
-        return 0
-    else:
-        raise ValueError(f"Invalid source name: {name}")
-
 
 def get_bkg_level(filename):
     """Get background level"""
-    filename = str(filename.stem)
+    filename = Path(filename).stem
 
     if "bg1" in filename:
         return 0.01
@@ -67,6 +23,11 @@ def get_bkg_level(filename):
         return 1.0
 
     raise ValueError(f"Cannot get backgrounnd level from: {filename}")
+
+
+def to_path_list(filenames):
+    """Convert filenames to path list"""
+    return [Path(filename) for filename in filenames]
 
 
 def to_shape(data, shape):
@@ -115,18 +76,9 @@ def read_sub_config(filename, method):
 
 def get_instrument_and_idx(filename):
     """Get instrument and idx from filename"""
-    parts = filename.stem.split("_")
+    parts = Path(filename).stem.split("_")
     instrument, idx = parts[0], parts[-1]
     return instrument, idx
-
-
-def read_flux_ref(scenario):
-    """Read reference flux"""
-    filename = get_filenames("chandra", bkg_level="", name=scenario, quantity="flux")[0]
-
-    flux_ref = fits.getdata(filename).astype(np.float32)
-
-    return flux_ref
 
 
 def read_npred_ref(instrument, name):
@@ -138,18 +90,6 @@ def read_npred_ref(instrument, name):
     flux_ref = fits.getdata(filename).astype(np.float32)
 
     return flux_ref
-
-
-def get_filenames(instrument, bkg_level, name, quantity="counts"):
-    """Find files"""
-    path = Path(f"data") / DATA_PATH[instrument]
-
-    # group_idx = get_group_idx(name=name)
-    pattern = FILE_PATTERN[instrument][quantity].format(
-        bkg_level=bkg_level,
-        name=name,
-    )
-    return list(path.glob(pattern))
 
 
 def read_dataset(filename_counts, filename_psf):
@@ -170,34 +110,20 @@ def read_dataset(filename_counts, filename_psf):
     }
 
 
-def read_datasets(filenames_counts):
+def read_datasets(filenames_counts, filenames_psf):
     """Read multiple datasets"""
     datasets = {}
 
-    for filename in filenames_counts:
-        instrument, idx = get_instrument_and_idx(filename)
+    for filename_counts, filename_psf in zip(filenames_counts, filenames_psf):
+        instrument, idx = get_instrument_and_idx(filename_counts)
         name = f"{instrument}-{idx}"
 
-        filename_psf = filename.parent / FILE_PATTERN[instrument]["psf"]
-
-        dataset = read_dataset(filename_counts=filename, filename_psf=filename_psf)
+        dataset = read_dataset(
+            filename_counts=filename_counts, filename_psf=filename_psf
+        )
         datasets[name] = dataset
 
     return datasets
-
-
-def read_datasets_all(prefix, bkg_level, scenario):
-    """Read all datasets"""
-    datasets_all = {}
-
-    for instrument in INSTRUMENTS[prefix]:
-        filename_counts = get_filenames(
-            instrument=instrument, bkg_level=bkg_level, name=scenario, quantity="counts"
-        )
-        datasets = read_datasets(filenames_counts=filename_counts)
-        datasets_all.update(datasets)
-
-    return datasets_all
 
 
 def stack_datasets(datasets):

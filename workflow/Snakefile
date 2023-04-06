@@ -14,6 +14,36 @@ configfile : "config/config.yaml"
 envvars:
     "JOLIDECO_GMM_LIBRARY"
 
+INSTRUMENTS = {
+    "chandra": ["chandra"],
+    "xmm": ["xmm"],
+    "joint": ["chandra", "xmm"],
+}
+
+DATA_PATH = {
+    "chandra": "",  # "chandra_gauss_fwhm4710_128x128",
+    "xmm": "",  # "xmm_gauss_fwhm14130_128x128",
+}
+
+FILE_PATTERN_CHANDRA = {
+    "counts": "chandra_gauss_fwhm4710_128x128_sim0*_{bkg_level}_{name}_iter*.fits",
+    "psf": "chandra_gauss_fwhm4710_128x128_psf_33x33.fits",
+    "flux": "chandra_gauss_fwhm4710_128x128_mod0*{name}.fits",
+    "npred": "chandra_gauss_fwhm4710_128x128_img0*{name}.fits",
+}
+
+FILE_PATTERN_XMM = {
+    "counts": "xmm_gauss_fwhm14130_128x128_sim0*_{bkg_level}_{name}_iter*.fits",
+    "psf": "xmm_gauss_fwhm14130_128x128_psf_63x63.fits",
+    "flux": "xmm_gauss_fwhm14130_128x128_mod0*{name}.fits",
+    "npred": "xmm_gauss_fwhm14130_128x128_img0*{name}.fits",
+}
+
+FILE_PATTERN = {
+    "chandra": FILE_PATTERN_CHANDRA,
+    "xmm": FILE_PATTERN_XMM,
+}
+
 def get_max_values(pattern="*_mod*_*.fits"):
     """Get max values"""
     data_path = Path("data/")
@@ -26,6 +56,55 @@ def get_max_values(pattern="*_mod*_*.fits"):
         max_values[key] = data.max()
     
     return max_values
+
+
+def get_group_idx(name):
+    """Get group index"""
+    if "disk" in name:
+        return 2
+    elif "spiral" in name:
+        return 3
+    elif "point" in name:
+        return 1
+    elif "aster" in name:
+        return 0
+    else:
+        raise ValueError(f"Invalid source name: {name}")
+
+
+def get_filenames(instrument, bkg_level, name, quantity="counts"):
+    """Find files"""
+    path = Path(f"data") / DATA_PATH[instrument]
+
+    # group_idx = get_group_idx(name=name)
+    pattern = FILE_PATTERN[instrument][quantity].format(
+        bkg_level=bkg_level,
+        name=name,
+    )
+    return list(path.glob(pattern))
+
+
+def get_datasets_filenames(wildcards):
+    """Get datasets filenames"""
+    prefix, bkg_level, scenario = wildcards.prefix, wildcards.bkg_level, wildcards.scenario
+    
+    filenames_all = {
+        "counts": [],
+        "psf": [],
+    }
+
+    for instrument in INSTRUMENTS[prefix]:
+        filenames = get_filenames(
+            instrument=instrument, bkg_level=bkg_level, name=scenario, quantity="counts"
+        )
+        filenames_all["counts"].extend(filenames)  
+
+        filename_psf = get_filenames(
+            instrument=instrument, bkg_level=bkg_level, name=scenario, quantity="psf"
+        )
+        filenames_all["psf"].extend(filename_psf * len(filenames))
+
+    return filenames_all  
 
 
 MAX_VALUES = get_max_values()

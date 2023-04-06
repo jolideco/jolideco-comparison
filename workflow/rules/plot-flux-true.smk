@@ -1,6 +1,13 @@
+def get_flux_true_filename(wildcards):
+    """"Get flux ground truth filename"""
+    # grpound truth is the same for Chandra and XMM and all bkg levels
+    filename = get_filenames("chandra", bkg_level="", name=wildcards.scenario, quantity="flux")[0]
+    return filename
+
 rule plot_flux_true:
     input:
-        "config/{scenario}/bg1/chandra.yaml"
+        get_flux_true_filename,
+        config="config/{scenario}/bg1/chandra.yaml",
     output:
         "results/{scenario}/images/flux-true-thumbnail.png",
     log:

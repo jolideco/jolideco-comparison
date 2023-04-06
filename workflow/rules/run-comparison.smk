@@ -3,8 +3,8 @@ rule run_comparison:
         unpack(get_datasets_filenames),
         config="config/{scenario}/{bkg_level}/{prefix}.yaml",
     output:
-        "results/{scenario}/{bkg_level}/{prefix}/{method}/{scenario}-{bkg_level}-{method}-{prefix}-result.fits.gz"
+        expand("results/{{scenario}}/{{bkg_level}}/{{prefix}}/{method}/{{scenario}}-{{bkg_level}}-{method}-{{prefix}}-result.fits.gz", method=config["methods"])
     log:
-        "logs/run-comparison/{scenario}-{bkg_level}-{method}-{prefix}.log"
+        expand("logs/run-comparison/{{scenario}}-{{bkg_level}}-{method}-{{prefix}}.log", method=config["methods"])
     script:
         "../scripts/run-comparison.py"

@@ -138,7 +138,13 @@ def stack_datasets(datasets):
         for key, value in dataset.items():
             if key == "psf":
                 value = to_shape(value, psf_shape)
-            stacked[key] += value
+                exposure_stacked = stacked["exposure"].mean()
+                exposure = dataset["exposure"].mean()
+                stacked[key] = (stacked[key] * exposure_stacked + value * exposure) / (
+                    exposure_stacked + exposure
+                )
+            else:
+                stacked[key] += value
 
     return stacked
 

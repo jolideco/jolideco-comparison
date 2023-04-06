@@ -3,7 +3,7 @@ import copy
 import numpy as np
 from utils import read_datasets, read_sub_config, stack_datasets
 
-DEBUG = False
+DEBUG = True
 
 RANDOM_STATE = np.random.RandomState(7362)
 
@@ -92,8 +92,6 @@ if __name__ == "__main__":
     config_run = read_sub_config(
         snakemake.input.config, method=snakemake.wildcards.method
     )
-
-    print(type(snakemake.input.counts))
 
     datasets = read_datasets(
         filenames_counts=snakemake.input.counts,

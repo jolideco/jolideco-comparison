@@ -6,11 +6,10 @@ import yaml
 from astropy.convolution import convolve_fft
 from astropy.visualization import simple_norm
 from plot import DPI, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE, plot_flux_thumbnail
-from scipy.ndimage import gaussian_filter
 from skimage import metrics
 from utils import (
     read_config,
-    read_datasets_all,
+    read_datasets,
     read_deconvolution_result,
     read_flux_ref,
     stack_datasets,
@@ -178,7 +177,7 @@ if __name__ == "__main__":
     }
 
     result = read_deconvolution_result(snakemake.input[0])
-    datasets = read_datasets_all(**kwargs)
+    datasets = read_datasets(**kwargs)
     dataset = stack_datasets(datasets=datasets)
 
     flux_ref = read_flux_ref(scenario=kwargs["scenario"])

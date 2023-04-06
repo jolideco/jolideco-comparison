@@ -84,15 +84,21 @@ def plot_background(background, filename):
 
 if __name__ == "__main__":
     datasets = read_datasets(
-        filenames_counts=snakemake.input.counts,
-        filenames_psf=snakemake.input.psf,
+        filenames_counts=snakemake.input.filenames_counts,
+        filenames_psf=snakemake.input.filenames_psf,
     )
 
     stacked = stack_datasets(datasets)
 
-    plot_counts(counts=stacked["counts"], filename=snakemake.output[0])
-    plot_exposure(exposure=stacked["exposure"], filename=snakemake.output[1])
-    plot_background(background=stacked["background"], filename=snakemake.output[2])
+    filename = snakemake.output.filename_image_counts
+    plot_counts(counts=stacked["counts"], filename=filename)
+
+    filename = snakemake.output.filename_image_exposure
+    plot_exposure(exposure=stacked["exposure"], filename=filename)
+
+    filename = snakemake.output.filename_image_background
+    plot_background(background=stacked["background"], filename=filename)
 
     stacked["psf"] = to_shape(stacked["psf"], shape=stacked["counts"].shape)
-    plot_psf(psf=stacked["psf"], filename=snakemake.output[3])
+    filename = snakemake.output.filename_image_psf
+    plot_psf(psf=stacked["psf"], filename=filename)

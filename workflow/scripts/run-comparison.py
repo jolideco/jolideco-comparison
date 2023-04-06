@@ -94,8 +94,8 @@ if __name__ == "__main__":
     )
 
     datasets = read_datasets(
-        filenames_counts=snakemake.input.counts,
-        filenames_psf=snakemake.input.psf,
+        filenames_counts=snakemake.input.filenames_counts,
+        filenames_psf=snakemake.input.filenames_psf,
     )
 
     result = run_deconvolution(datasets=datasets, config_run=config_run)

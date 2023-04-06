@@ -89,22 +89,34 @@ def get_datasets_filenames(wildcards):
     prefix, bkg_level, scenario = wildcards.prefix, wildcards.bkg_level, wildcards.scenario
     
     filenames_all = {
-        "counts": [],
-        "psf": [],
+        "filenames_counts": [],
+        "filenames_psf": [],
     }
 
     for instrument in INSTRUMENTS[prefix]:
         filenames = get_filenames(
             instrument=instrument, bkg_level=bkg_level, name=scenario, quantity="counts"
         )
-        filenames_all["counts"].extend(filenames)  
+        filenames_all["filenames_counts"].extend(filenames)  
 
         filename_psf = get_filenames(
             instrument=instrument, bkg_level=bkg_level, name=scenario, quantity="psf"
         )
-        filenames_all["psf"].extend(filename_psf * len(filenames))
+        filenames_all["filenames_psf"].extend(filename_psf * len(filenames))
 
     return filenames_all  
+    
+
+def get_filename_flux_ref(wildcards):
+    """"Get flux ground truth filename"""
+    # grpound truth is the same for Chandra and XMM and all bkg levels
+    filename = get_filenames("chandra", bkg_level="", name=wildcards.scenario, quantity="flux")[0]
+    return filename
+
+
+def get_filename_config(wildcards):
+    """Get config filename"""
+    return f"config/{wildcards.scenario}/{wildcards.bkg_level}/{wildcards.prefix}.yaml"
 
 
 MAX_VALUES = get_max_values()

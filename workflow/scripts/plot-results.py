@@ -1,19 +1,15 @@
 import logging
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 import yaml
 from astropy.convolution import convolve_fft
+from astropy.io import fits
 from astropy.visualization import simple_norm
 from plot import DPI, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE, plot_flux_thumbnail
 from skimage import metrics
-from utils import (
-    read_config,
-    read_datasets,
-    read_deconvolution_result,
-    read_flux_ref,
-    stack_datasets,
-)
+from utils import read_config, read_datasets, read_deconvolution_result, stack_datasets
 
 log = logging.getLogger(__name__)
 
@@ -170,17 +166,14 @@ def npred_jolideco(flux, dataset):
 
 
 if __name__ == "__main__":
-    kwargs = {
-        "scenario": snakemake.wildcards.scenario,
-        "bkg_level": snakemake.wildcards.bkg_level,
-        "prefix": snakemake.wildcards.prefix,
-    }
-
-    result = read_deconvolution_result(snakemake.input[0])
-    datasets = read_datasets(**kwargs)
+    result = read_deconvolution_result(snakemake.input.filename_result)
+    datasets = read_datasets(
+        filenames_counts=snakemake.input.filenames_counts,
+        filenames_psf=snakemake.input.filenames_psf,
+    )
     dataset = stack_datasets(datasets=datasets)
 
-    flux_ref = read_flux_ref(scenario=kwargs["scenario"])
+    flux_ref = fits.getdata(snakemake.input.filename_flux_ref)
 
     if "pylira" in snakemake.wildcards.method:
         plot_trace_lira(result=result, filename=snakemake.output[2])
@@ -196,13 +189,13 @@ if __name__ == "__main__":
 
     metrics = compute_metrics(flux=flux, flux_ref=flux_ref)
 
-    log.info(f"Writing {snakemake.output[4]}")
+    filename_metrics = Path(snakemake.output.filename_metrics)
+    log.info(f"Writing {filename_metrics}")
 
-    with open(snakemake.output[4], "w") as f:
+    with filename_metrics.open("w") as f:
         yaml.dump(metrics, f)
 
-    path = "config/{scenario}/{bkg_level}/{prefix}.yaml".format(**kwargs)
-    config = read_config(path)
+    config = read_config(snakemake.input.filename_config)
 
     plot_flux(
         flux=flux,

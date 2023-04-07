@@ -27,11 +27,9 @@
    {% endfor %}
 
 
-Subpages
---------
-
 .. toctree::
    :maxdepth: 1
+   :hidden:
 
    {% for prefix in prefixes %}
    {% set filename ="{prefix}/index.rst".format(prefix=prefix) %}

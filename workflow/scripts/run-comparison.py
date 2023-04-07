@@ -26,15 +26,15 @@ def prepare_datasets_jolideco(datasets):
     return datasets
 
 
-def get_flux_init(datasets):
+def get_flux_init(datasets, oversample=10.0):
     """Get flux init"""
     stacked = stack_datasets(datasets=datasets)
 
     flux = stacked["counts"] / stacked["exposure"] - stacked["background"]
 
-    flux_init = np.clip(flux, 0, np.inf)
+    flux_mean = np.nanmean(np.clip(flux, 0, np.inf))
 
-    # flux_init = RANDOM_STATE.gamma(flux_mean, size=flux.shape).astype(np.float32)
+    flux_init = RANDOM_STATE.gamma(oversample * flux_mean, size=flux.shape) / oversample
     return flux_init.astype(np.float32)
 
 

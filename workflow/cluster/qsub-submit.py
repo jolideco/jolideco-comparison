@@ -7,7 +7,7 @@ from snakemake.utils import read_job_properties
 jobscript = sys.argv[1]
 job_properties = read_job_properties(jobscript)
 
-name_template = "{scenario}-{bkg_level}-{prefix}-{method}"
+name_template = "{scenario}-{bkg_level}-{prefix}"
 name = job_properties["rule"] + name_template.format(**job_properties["wildcards"])
 
 ARGS = {

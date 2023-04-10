@@ -68,6 +68,7 @@ Dataset
 
 .. toctree::
    :maxdepth: 1
+   :hidden:
 
    {% for method in methods %}
    {% set filename ="{method}/index.rst".format(method=method) %}

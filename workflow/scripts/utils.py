@@ -25,6 +25,18 @@ def get_bkg_level(filename):
     raise ValueError(f"Cannot get backgrounnd level from: {filename}")
 
 
+def get_exposure_level(filename):
+    """Get exposure level"""
+    filename = Path(filename).stem
+
+    if "chandra" in filename:
+        return 1.0
+    elif "xmm" in filename:
+        return 5.0
+
+    raise ValueError(f"Cannot get exposure level from: {filename}")
+
+
 def to_path_list(filenames):
     """Convert filenames to path list"""
     return [Path(filename) for filename in filenames]
@@ -86,7 +98,8 @@ def read_dataset(filename_counts, filename_psf):
     counts = fits.getdata(filename_counts).astype(np.float32)
     psf = fits.getdata(filename_psf).astype(np.float32)
 
-    exposure = np.ones_like(counts)
+    exposure_level = get_exposure_level(filename_counts)
+    exposure = exposure_level * np.ones_like(counts)
 
     bkg_level = get_bkg_level(filename_counts)
     background = bkg_level * np.ones_like(counts)

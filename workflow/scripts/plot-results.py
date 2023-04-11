@@ -24,13 +24,14 @@ METRICS = {
 def compute_metrics(flux, flux_ref):
     """Compute metrics"""
     results = {}
+    flux = np.nan_to_num(flux)
 
     for name, metric in METRICS.items():
         if name == "SSI":
             data_range = flux_ref.max() - flux_ref.min()
-            value = metric(flux, flux_ref, data_range=data_range)
+            value = metric(flux_ref, flux, data_range=data_range)
         else:
-            value = metric(flux, flux_ref)
+            value = metric(flux_ref, flux)
 
         results[name] = float(round(value, 3))
 

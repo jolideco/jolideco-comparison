@@ -61,7 +61,11 @@ Results Overview
      {% endfor %}
 
 
-MSE = Mean Squared Error, SSI = Structural Similarity Index, NMI = Normalized Mutual Information, NRMSE = Normalized Root Mean Squared Error
+MSE = Mean Squared Error,
+SSI = Structural Similarity Index,
+NMI = Normalized Mutual Information,
+NRMSE = Normalized Root Mean Squared Error
+
 
 Dataset
 -------

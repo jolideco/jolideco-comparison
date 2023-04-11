@@ -14,7 +14,7 @@ ARGS = {
     "-S": "/bin/bash",
     "-pe": "mthread 16",
     "-q": "sThC.q",
-    "-l": "mres=32G,h_data=4G,h_vmem=4G",
+    "-l": "mres=64G,h_data=4G,h_vmem=4G",
     "-j": "y",
     "-N": f"{name}",
     "-M": "axel.donath@cfa.harvard.edu",

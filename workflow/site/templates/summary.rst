@@ -45,7 +45,7 @@ Predicted Counts
 
 Metrics
 -------
-MSE = Mean Squared Error, SSI = Structural Similarity Index
+MSE = Mean Squared Error, SSI = Structural Similarity Index, NMI = Normalized Mutual Information, NRMSE = Normalized Root Mean Squared Error
 
 .. list-table:: 
    :header-rows: 1

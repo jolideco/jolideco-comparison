@@ -7,7 +7,7 @@ import yaml
 from astropy.convolution import convolve_fft
 from astropy.io import fits
 from astropy.visualization import simple_norm
-from plot import DPI, FIGSIZE_THUMBNAIL, FIGSIZE_WIDE, plot_flux_thumbnail
+from plot import DPI, FIGSIZE_WIDE, plot_flux_thumbnail
 from skimage import metrics
 from utils import read_config, read_datasets, read_deconvolution_result, stack_datasets
 
@@ -16,6 +16,8 @@ log = logging.getLogger(__name__)
 METRICS = {
     "MSE": metrics.mean_squared_error,
     "SSI": metrics.structural_similarity,
+    "NRMSE": metrics.normalized_root_mse,
+    "NMI": metrics.normalized_mutual_information,
 }
 
 

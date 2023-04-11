@@ -46,6 +46,22 @@ Results Overview
      - {{ metrics[method]["MSE"] }}
      {% endfor %}
 
+   * - NRMSE
+     - 0
+     - 
+     {% for method in methods %}
+     - {{ metrics[method]["NRMSE"] }}
+     {% endfor %}
+
+   * - NMI
+     - 0
+     - 
+     {% for method in methods %}
+     - {{ metrics[method]["NMI"] }}
+     {% endfor %}
+
+
+MSE = Mean Squared Error, SSI = Structural Similarity Index, NMI = Normalized Mutual Information, NRMSE = Normalized Root Mean Squared Error
 
 Dataset
 -------

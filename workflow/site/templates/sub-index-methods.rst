@@ -9,6 +9,7 @@ Results Overview
 
    * - 
      - Ground Truth
+     - Counts
      {% for method in methods %}
      - {{ method }}
      {% endfor %}
@@ -16,6 +17,11 @@ Results Overview
    * - Flux
      - .. image:: ../../images/flux-true-thumbnail.png
           :target: ../../images/flux-true-thumbnail.png
+          :align: center
+          :width: 200px
+
+     - .. image:: images/counts-thumbnail.png
+          :target: images/counts-thumbnail.png
           :align: center
           :width: 200px
 
@@ -28,12 +34,14 @@ Results Overview
 
    * - SSI
      - 1
+     - 
      {% for method in methods %}
      - {{ metrics[method]["SSI"] }}
      {% endfor %}
 
    * - MSE
      - 0
+     - 
      {% for method in methods %}
      - {{ metrics[method]["MSE"] }}
      {% endfor %}

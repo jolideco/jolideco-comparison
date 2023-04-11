@@ -7,6 +7,7 @@
 
    * - Instrument
      - Ground Truth
+     - Counts
      {% for method in methods %}
      - {{ method }}
      {% endfor %}
@@ -17,7 +18,11 @@
      - .. image:: ../images/flux-true-thumbnail.png
           :align: center
           :width: 200px
-
+    
+     - .. image:: {{ prefix }}/images/counts-thumbnail.png
+          :align: center
+          :width: 200px
+    
      {% for method in methods %}
      - .. image:: {{ "{prefix}/{method}/images/flux-thumbnail.png".format(method=method, prefix=prefix) }}
           :align: center

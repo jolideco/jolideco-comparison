@@ -2,7 +2,7 @@ import logging
 
 import matplotlib.pyplot as plt
 from astropy.visualization import simple_norm
-from plot import AXES_RECT, DPI, FIGSIZE
+from plot import AXES_RECT, DPI, FIGSIZE, FIGSIZE_THUMBNAIL
 from utils import read_datasets, stack_datasets, to_shape
 
 log = logging.getLogger(__name__)
@@ -67,6 +67,24 @@ def plot_counts(counts, filename):
     plt.savefig(filename, dpi=DPI)
 
 
+def plot_counts_thumbnail(counts, filename):
+    """Plot counts thumbnail"""
+    fig = plt.figure(figsize=FIGSIZE_THUMBNAIL)
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_axis_off()
+
+    norm = simple_norm(
+        counts,
+        min_cut=0,
+        stretch="asinh",
+        asinh_a=0.1,
+    )
+
+    ax.imshow(counts, norm=norm, origin="lower")
+    log.info(f"Writing {filename}")
+    plt.savefig(filename, dpi=DPI)
+
+
 def plot_background(background, filename):
     """Plot background image."""
     fig = plt.figure(figsize=FIGSIZE)
@@ -92,6 +110,9 @@ if __name__ == "__main__":
 
     filename = snakemake.output.filename_image_counts
     plot_counts(counts=stacked["counts"], filename=filename)
+
+    filename = snakemake.output.filename_image_counts_thumbnail
+    plot_counts_thumbnail(counts=stacked["counts"], filename=filename)
 
     filename = snakemake.output.filename_image_exposure
     plot_exposure(exposure=stacked["exposure"], filename=filename)

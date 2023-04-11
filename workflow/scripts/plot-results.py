@@ -117,20 +117,6 @@ def plot_npred(npred, npred_ref, filename, config):
     plt.savefig(filename, dpi=DPI)
 
 
-def plot_counts_thumbnail(counts, filename, config):
-    """Plot counts thumbnail"""
-    fig = plt.figure(figsize=FIGSIZE_THUMBNAIL)
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_axis_off()
-    kwargs = config["plot"]["flux"]["norm"]
-    kwargs["max_cut"] = 5 * kwargs["max_cut"]
-    norm = simple_norm(flux_ref, **kwargs)
-
-    ax.imshow(counts, norm=norm, origin="lower")
-    log.info(f"Writing {filename}")
-    plt.savefig(filename, dpi=DPI)
-
-
 def plot_trace_lira(result, filename):
     """Plot trace of LIRA parameters."""
     result.plot_parameter_traces()

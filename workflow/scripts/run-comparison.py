@@ -41,7 +41,7 @@ def get_flux_init(datasets, oversample=10.0):
 def run_jolideco(datasets, config, debug):
     """Run jolideco"""
     from jolideco.core import MAPDeconvolver
-    from jolideco.models import FluxComponents
+    from jolideco.models import FluxComponents, NPredCalibration, NPredCalibrations
 
     flux_init = get_flux_init(datasets=datasets)
 
@@ -57,7 +57,17 @@ def run_jolideco(datasets, config, debug):
         deconvolver.n_epochs = N_ITER_DEBUG
 
     datasets = prepare_datasets_jolideco(datasets=datasets)
-    result = deconvolver.run(datasets=datasets, components=components)
+
+    calibrations = NPredCalibrations()
+
+    for name in datasets:
+        calibration = NPredCalibration(background_norm=1)
+        calibration.shift_xy.requires_grad = False
+        calibrations[name] = calibration
+
+    result = deconvolver.run(
+        datasets=datasets, components=components, calibrations=calibrations
+    )
     return result
 
 

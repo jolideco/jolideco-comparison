@@ -22,6 +22,7 @@ runs:
       n_burn_in: 500
       n_iter_max: 2000
       alpha_init: [1, 1, 1, 1, 1, 1, 1]
+      fit_background_scale: true
   - name: jolideco-uniform-prior=n=10
     method: jolideco
     deconvolver:

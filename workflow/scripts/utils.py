@@ -89,7 +89,7 @@ def read_sub_config(filename, method):
 def get_instrument_and_idx(filename):
     """Get instrument and idx from filename"""
     parts = Path(filename).stem.split("_")
-    instrument, idx = parts[0], parts[-1]
+    instrument, idx = parts[0], parts[-1].replace(".", "")
     return instrument, idx
 
 

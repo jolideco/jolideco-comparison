@@ -30,7 +30,7 @@ def get_flux_init(datasets, oversample=10.0):
     """Get flux init"""
     stacked = stack_datasets(datasets=datasets)
 
-    flux = stacked["counts"] / stacked["exposure"] - stacked["background"]
+    flux = (stacked["counts"] - stacked["background"]) / stacked["exposure"]
 
     flux_mean = np.nanmean(np.clip(flux, 0, np.inf))
 
@@ -41,7 +41,7 @@ def get_flux_init(datasets, oversample=10.0):
 def run_jolideco(datasets, config, debug):
     """Run jolideco"""
     from jolideco.core import MAPDeconvolver
-    from jolideco.models import FluxComponents, NPredCalibration, NPredCalibrations
+    from jolideco.models import FluxComponents
 
     flux_init = get_flux_init(datasets=datasets)
 
@@ -58,15 +58,9 @@ def run_jolideco(datasets, config, debug):
 
     datasets = prepare_datasets_jolideco(datasets=datasets)
 
-    calibrations = NPredCalibrations()
-
-    for name in datasets:
-        calibration = NPredCalibration(background_norm=1)
-        calibration.shift_xy.requires_grad = False
-        calibrations[name] = calibration
-
     result = deconvolver.run(
-        datasets=datasets, components=components, calibrations=calibrations
+        datasets=datasets,
+        components=components,
     )
     return result
 

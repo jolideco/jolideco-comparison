@@ -16,13 +16,6 @@ plot:
       min_cut: 0
       stretch: "asinh"
 runs:
-  - name: pylira
-    method: lira
-    deconvolver:
-      n_burn_in: 500
-      n_iter_max: 2000
-      alpha_init: [1, 1, 1, 1, 1, 1, 1]
-      fit_background_scale: true
   - name: jolideco-uniform-prior=n=10
     method: jolideco
     deconvolver:
@@ -39,27 +32,13 @@ runs:
       flux:
         prior:
           type: uniform
-  - name: jolideco-patch-prior-gleam-v0.1
-    method: jolideco
+  - name: pylira
+    method: lira
     deconvolver:
-      n_epochs: 2000
-      beta: 1.0
-      device: cuda:0
-    components:
-      flux:
-        upsampling_factor: 2
-        use_log_flux: true
-        prior:
-          type: gmm-patches
-          stride: 4
-          jitter: false
-          cycle_spin: true
-          cycle_spin_subpix: false
-          device: cuda:0
-          gmm:
-            type: gleam-v0.1
-          norm:
-            type: identity
+      n_burn_in: 500
+      n_iter_max: 2000
+      alpha_init: [1, 1, 1, 1, 1, 1, 1]
+      fit_background_scale: true
   - name: jolideco-patch-prior-zoran-weiss
     method: jolideco
     deconvolver:
@@ -82,3 +61,24 @@ runs:
           norm:
             type: fixed-max
             max_value: {max_value}
+  - name: jolideco-patch-prior-gleam-v0.1
+    method: jolideco
+    deconvolver:
+      n_epochs: 2000
+      beta: 1.0
+      device: cuda:0
+    components:
+      flux:
+        upsampling_factor: 2
+        use_log_flux: true
+        prior:
+          type: gmm-patches
+          stride: 4
+          jitter: false
+          cycle_spin: true
+          cycle_spin_subpix: false
+          device: cuda:0
+          gmm:
+            type: gleam-v0.1
+          norm:
+            type: identity

@@ -4,6 +4,7 @@ name: jolideco-comparison
 channels:
   - conda-forge
   - bioconda
+  - hcc
 
 variables:
   PYTHONNOUSERSITE: "1"
@@ -11,12 +12,15 @@ variables:
 dependencies:
   - python=3.9
   - snakemake>=6.4
-  - astropy>5.2
+  - astropy>5.2,<6.0
   - scipy=1.10.1
   - sphinx=6.1
   - matplotlib=3.6
   - scikit-image=0.19
+  - pip=21.3
+  - r-base=4.1
+  - r-mathlib=4.0.2
   - pip:
       - pylira
       - sphinxawesome-theme
-      - git+https://github.com/adonath/jolideco.git
+      - git+https://github.com/jolideco/jolideco.git

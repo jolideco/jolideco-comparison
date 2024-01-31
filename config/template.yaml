@@ -42,7 +42,7 @@ runs:
   - name: jolideco-patch-prior-zoran-weiss
     method: jolideco
     deconvolver:
-      n_epochs: 2000
+      n_epochs: 2500
       beta: 1.0
       device: cuda:0
     components:
@@ -64,7 +64,7 @@ runs:
   - name: jolideco-patch-prior-gleam-v0.1
     method: jolideco
     deconvolver:
-      n_epochs: 2000
+      n_epochs: 2500
       beta: 1.0
       device: cuda:0
     components:

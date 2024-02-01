@@ -13,8 +13,8 @@ name = job_properties["rule"] + name_template.format(**job_properties["wildcards
 ARGS = {
     "-S": "/bin/bash",
     "-pe": "mthread 8",
-    "-q": "sThC.q",
-    "-l": "mres=64G,h_data=8G,h_vmem=8G",
+    "-q": "sThM.q",
+    "-l": "mres=128G,h_data=16G,h_vmem=16G,himem",
     "-j": "y",
     "-N": f"{name}",
     "-M": "axel.donath@cfa.harvard.edu",

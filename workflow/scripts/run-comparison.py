@@ -1,7 +1,11 @@
 import copy
+import logging
+from pathlib import Path
 
 import numpy as np
 from utils import read_config, read_datasets, stack_datasets
+
+log = logging.getLogger(__name__)
 
 RANDOM_STATE = np.random.RandomState(7362)
 
@@ -41,7 +45,7 @@ def get_flux_init(datasets, oversample=10.0):
 def run_jolideco(datasets, config, debug):
     """Run jolideco"""
     from jolideco.core import MAPDeconvolver
-    from jolideco.models import FluxComponents
+    from jolideco.models import FluxComponents, NPredCalibration, NPredCalibrations
 
     flux_init = get_flux_init(datasets=datasets)
 
@@ -58,9 +62,19 @@ def run_jolideco(datasets, config, debug):
 
     datasets = prepare_datasets_jolideco(datasets=datasets)
 
+    calibrations = NPredCalibrations()
+
+    for idx, name in enumerate(datasets):
+        calibration = NPredCalibration(background_norm=1.0, frozen=False)
+        if idx == 0:
+            calibration.shift_xy.requires_grad = False
+
+        calibrations[name] = calibration
+
     result = deconvolver.run(
         datasets=datasets,
         components=components,
+        calibrations=calibrations,
     )
     return result
 
@@ -102,7 +116,12 @@ if __name__ == "__main__":
     )
 
     for idx, config_run in enumerate(config["runs"]):
+        filename = snakemake.output[idx]
+        if Path(filename).exists():
+            log.info(f"Output file {filename} exists, skipping")
+            continue
+
         result = run_deconvolution(
             datasets=datasets, config_run=config_run, debug=debug
         )
-        result.write(snakemake.output[idx])
+        result.write(filename)

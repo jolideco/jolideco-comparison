@@ -38,11 +38,11 @@ runs:
       n_burn_in: 500
       n_iter_max: 2000
       alpha_init: [1, 1, 1, 1, 1, 1, 1]
-      fit_background_scale: true
+      fit_background_scale: false
   - name: jolideco-patch-prior-zoran-weiss
     method: jolideco
     deconvolver:
-      n_epochs: 2500
+      n_epochs: 2000
       beta: 1.0
       device: cuda:0
     components:
@@ -64,7 +64,7 @@ runs:
   - name: jolideco-patch-prior-gleam-v0.1
     method: jolideco
     deconvolver:
-      n_epochs: 2500
+      n_epochs: 2000
       beta: 1.0
       device: cuda:0
     components:

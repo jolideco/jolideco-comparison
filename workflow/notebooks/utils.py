@@ -15,12 +15,14 @@ def get_bkg_level(filename):
     """Get background level"""
     filename = Path(filename).stem
 
+    scale = 2 if "xmm" in filename else 1
+
     if "bg1" in filename:
-        return 0.01
+        return 0.01 * scale
     elif "bg2" in filename:
-        return 0.1
+        return 0.1 * scale
     elif "bg3" in filename:
-        return 1.0
+        return 1.0 * scale
 
     raise ValueError(f"Cannot get backgrounnd level from: {filename}")
 
@@ -102,7 +104,7 @@ def read_dataset(filename_counts, filename_psf):
     exposure = exposure_level * np.ones_like(counts)
 
     bkg_level = get_bkg_level(filename_counts)
-    background = bkg_level * np.ones_like(counts)
+    background = exposure_level * bkg_level * np.ones_like(counts)
 
     return {
         "counts": counts,

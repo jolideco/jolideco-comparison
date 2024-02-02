@@ -21,6 +21,6 @@ dependencies:
   - r-base=4.1
   - r-mathlib=4.0.2
   - pip:
-      - pylira
-      - sphinxawesome-theme
+      - pylira=0.2
+      - sphinxawesome-theme=4.0.3
       - git+https://github.com/jolideco/jolideco.git
